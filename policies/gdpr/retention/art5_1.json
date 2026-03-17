@@ -1,0 +1,40 @@
+{
+  "id": "gdpr.retention.art5_1",
+  "title": "Indefinite Personal Data Retention",
+  "description": "Storing personal data without a defined retention period or expiry mechanism violates GDPR Article 5(1)(e) (storage limitation). Personal data must not be kept longer than necessary.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "retention",
+    "code": "art5_1"
+  },
+  "severity": "medium",
+  "languages": ["*"],
+  "tags": ["data-retention", "storage-limitation", "gdpr-art5"],
+  "scope": {
+    "node_kinds": ["function_call", "struct_definition", "class_definition"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(created_at|timestamp|created_on)(?!.*expires_at|.*deleted_at|.*retention|.*ttl|.*expiry)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(Model|Table|Schema).*(?:email|ssn|name|dob|address|phone)(?!.*expires|.*deleted_at|.*retention_days|.*ttl)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(retain_forever|no_expiry|never_delete|keep_all|archive_all)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-NO-RETENTION-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data model without apparent retention policy at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.5(1)(e)", "Art.17"],
+    "soc2": [],
+    "owasp": []
+  },
+  "references": [
+    "Add an expires_at or deleted_at field to all personal data models; implement automated purging.",
+    "Document retention periods for each data category in your Record of Processing Activities (RoPA).",
+    "Implement a scheduled data retention job that deletes or anonymises data past its retention date.",
+    "GDPR Article 5(1)(e): data must be kept in a form permitting identification no longer than necessary."
+  ]
+}

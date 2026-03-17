@@ -1,0 +1,65 @@
+{
+  "id": "owasp.injection.a03_nosql",
+  "title": "NoSQL Injection",
+  "description": "Inserting user-controlled objects directly into MongoDB, Redis, or other NoSQL queries can manipulate query operators and bypass access controls (OWASP A03:2021 / CWE-943).",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_nosql"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "nosql-injection",
+    "mongodb",
+    "injection",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "dict_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(\\$where|\\$gt|\\$lt|\\$ne|\\$regex|\\$exists).*(?:request|input|param|user)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(collection\\.find|db\\.find|Model\\.find|collection\\.findOne).*(?:request|input|query|param)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-NOSQL-INJECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential NoSQL injection via '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Validate and sanitize all query parameters; reject keys starting with '$' from user input.",
+    "Use typed schema validation (e.g., Mongoose schemas) to enforce expected document structure.",
+    "Never spread or merge user-controlled objects directly into database query filters.",
+    "OWASP Testing Guide: Testing for NoSQL Injection.",
+    "CWE references: CWE-943"
+  ]
+}

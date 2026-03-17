@@ -1,0 +1,64 @@
+{
+  "id": "owasp.config.a05_debug_mode",
+  "title": "Debug Mode Enabled in Production",
+  "description": "Running applications with debug mode enabled in production exposes stack traces, environment variables, and internal state to potential attackers (OWASP A05:2021 / CWE-94).",
+  "policy": {
+    "framework": "owasp",
+    "category": "config",
+    "code": "a05_debug_mode"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "debug-mode",
+    "misconfiguration",
+    "owasp-a05"
+  ],
+  "scope": {},
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(DEBUG\\s*=\\s*True|debug\\s*=\\s*true|app\\.run\\(.*debug\\s*=\\s*True|app\\.debug\\s*=\\s*True)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(FLASK_DEBUG\\s*=\\s*1|DJANGO_DEBUG\\s*=\\s*True|NODE_ENV\\s*=\\s*['\"]development['\"])"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(rails.*development|config\\.consider_all_requests_local\\s*=\\s*true|config\\.action_dispatch\\.show_exceptions\\s*=\\s*false)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-DEBUG-MODE-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Debug mode enabled at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A05"
+    ],
+    "soc2": [
+      "CC7.2"
+    ]
+  },
+  "references": [
+    "Disable debug mode via environment-specific configuration; never hardcode DEBUG=True.",
+    "Use environment variables (e.g., FLASK_ENV=production) to control debug behavior.",
+    "Ensure CI/CD pipelines validate that debug flags are off before deploying to production.",
+    "Implement a configuration validation step at startup that rejects debug=true in production environments.",
+    "CWE references: CWE-94, CWE-209"
+  ]
+}

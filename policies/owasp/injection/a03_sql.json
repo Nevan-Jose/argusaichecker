@@ -1,0 +1,65 @@
+{
+  "id": "owasp.injection.a03_sql",
+  "title": "SQL Injection",
+  "description": "SQL queries constructed by concatenating user-controlled input are vulnerable to SQL injection (OWASP A03:2021). An attacker can manipulate queries to bypass authentication, exfiltrate data, or destroy database contents.",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_sql"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "sql-injection",
+    "injection",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "string_interpolation",
+      "binary_expression",
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER).*(?:\\+|%s|format|f\"|f'|\\$\\{|string_interpolation)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(execute|query|cursor\\.execute|db\\.query|conn\\.execute).*(?:\\+|format|%|f\"|f')"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SQL-INJECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential SQL injection via string construction at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Use parameterized queries or prepared statements exclusively; never concatenate user input into SQL strings.",
+    "Use an ORM with parameterized query support (SQLAlchemy, Django ORM, Hibernate).",
+    "Validate and whitelist all user input before use; apply least-privilege database accounts.",
+    "OWASP SQL Injection Prevention Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html",
+    "CWE references: CWE-89"
+  ]
+}

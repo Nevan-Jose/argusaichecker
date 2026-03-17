@@ -1,0 +1,45 @@
+{
+  "id": "owasp.injection.a03",
+  "title": "SQL Query String Interpolation",
+  "description": "A SQL query is constructed via string interpolation, enabling SQL injection when user input reaches the query.",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["injection", "sql", "owasp-top10"],
+  "scope": {
+    "node_kinds": ["string_interpolation"]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SQL-001"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(SELECT|INSERT|UPDATE|DELETE)"
+      }
+    ]
+  },
+  "finding": {
+    "message": "SQL query built via string interpolation in {{file}} at line {{line}}. Use parameterized queries.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": ["A03"],
+    "soc2": [],
+    "gdpr": []
+  },
+  "references": [
+    "Use parameterized queries or prepared statements exclusively.",
+    "Apply an ORM or query builder that escapes values by default.",
+    "https://owasp.org/Top10/A03_2021-Injection/"
+  ]
+}

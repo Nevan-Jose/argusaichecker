@@ -1,0 +1,64 @@
+{
+  "id": "soc2.crypto.cc6_5",
+  "title": "Weak Symmetric Cipher",
+  "description": "Use of DES, 3DES, RC2, RC4, or AES in ECB mode violates SOC2 CC6.7. These ciphers are either broken or provide insufficient security for sensitive data encryption.",
+  "policy": {
+    "framework": "soc2",
+    "category": "crypto",
+    "code": "cc6_5"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "crypto",
+    "cipher",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(DES|3DES|TripleDES|RC2|RC4|AES/ECB|AES-ECB|Blowfish|\"DES\"|\"3DES\"|'DES'|'RC4')"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Cipher\\.getInstance\\(['\"](?:DES|DESede|RC2|RC4|AES/ECB)['\"]|Cipher\\.new\\(['\"](?:DES|RC4)['\"])"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-WEAK-CIPHER-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak or broken cipher '{{token}}' used in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.7"
+    ],
+    "owasp": [
+      "A02"
+    ]
+  },
+  "references": [
+    "Use AES-256-GCM or ChaCha20-Poly1305 for authenticated encryption.",
+    "Never use ECB mode — it is deterministic and leaks plaintext patterns.",
+    "RC4 is prohibited by RFC 7465; DES has a 56-bit key and is broken by brute force.",
+    "NIST SP 800-175B provides approved algorithm selection guidance.",
+    "CWE references: CWE-327"
+  ]
+}

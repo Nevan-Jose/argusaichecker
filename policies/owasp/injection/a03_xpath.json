@@ -1,0 +1,62 @@
+{
+  "id": "owasp.injection.a03_xpath",
+  "title": "XPath Injection",
+  "description": "Constructing XPath queries with unsanitized user input can allow attackers to alter query logic and extract unauthorized XML data (OWASP A03:2021 / CWE-643).",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_xpath"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "xpath-injection",
+    "injection",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_interpolation"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(xpath|XPath|selectNodes|evaluate|find\\().*(?:\\+|format|%s|f\"|f'|\\$\\{)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(doc\\.xpath|tree\\.xpath|etree\\.xpath|lxml.*xpath|xml\\.etree).*(?:input|param|user|request)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-XPATH-INJECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential XPath injection via '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": []
+  },
+  "references": [
+    "Use parameterized XPath queries if the library supports them.",
+    "Escape or strictly validate all user input before embedding in XPath expressions.",
+    "Consider using a typed XML binding library instead of raw XPath.",
+    "OWASP XPath Injection defense guidance.",
+    "CWE references: CWE-643"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "id": "soc2.auth.cc2",
+  "title": "Authentication Verification Disabled or Bypassed",
+  "description": "An authentication, signature, or certificate verification check is explicitly disabled. Disabling these controls allows forged tokens, expired sessions, or untrusted certificates to be accepted.",
+  "policy": {
+    "framework": "soc2",
+    "category": "auth",
+    "code": "cc2"
+  },
+  "severity": "critical",
+  "languages": ["*"],
+  "tags": ["auth", "bypass", "compliance", "soc2"],
+  "scope": {},
+  "match": {
+    "any": [
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-AUTH-001"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(ignoreExpiration|ignoreNotBefore|bypass_auth|disable_auth|skip_auth|InsecureSkipVerify|algorithms.*none|verify\\s*=\\s*False|ssl_verify\\s*=\\s*False)"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Authentication check '{{token}}' is disabled in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": ["CC2"],
+    "owasp": ["A07"],
+    "gdpr": []
+  },
+  "references": [
+    "Never disable token expiry, signature verification, or certificate validation in production.",
+    "Gate any test-only bypass behind an environment check and ensure it cannot reach production.",
+    "For JWT: always specify and enforce the expected algorithm set; reject the 'none' algorithm."
+  ]
+}

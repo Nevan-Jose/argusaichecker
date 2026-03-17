@@ -1,0 +1,73 @@
+{
+  "id": "owasp.config.a05_xxe",
+  "title": "XML External Entity (XXE) Processing",
+  "description": "XML parsers configured to resolve external entities can be exploited to read local files, perform SSRF, or cause denial of service (OWASP A05:2021 / CWE-611).",
+  "policy": {
+    "framework": "owasp",
+    "category": "config",
+    "code": "a05_xxe"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "xxe",
+    "xml",
+    "misconfiguration",
+    "owasp-a05"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "assignment"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(etree\\.XMLParser\\(|lxml\\.etree\\.XMLParser\\()(?!.*resolve_entities\\s*=\\s*False)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(SAXParserFactory|DocumentBuilderFactory|XMLInputFactory)(?!.*FEATURE_DISALLOW_DOCTYPE)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(libxml2\\.parseDoc|xmlReadFile|xmlParseDoc)(?!.*XML_PARSE_NOENT\\s*=\\s*False)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)resolve_entities\\s*=\\s*True"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-XXE-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "XML parser with potential XXE exposure '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A05"
+    ],
+    "soc2": []
+  },
+  "references": [
+    "Disable external entity resolution: set resolve_entities=False in lxml, FEATURE_DISALLOW_DOCTYPE in Java.",
+    "Use defusedxml library in Python to safely parse untrusted XML.",
+    "Consider JSON instead of XML for API payloads when possible.",
+    "OWASP XXE Prevention Cheat Sheet.",
+    "CWE references: CWE-611, CWE-776, CWE-827"
+  ]
+}

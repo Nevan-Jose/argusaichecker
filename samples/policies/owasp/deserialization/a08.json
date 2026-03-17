@@ -1,0 +1,45 @@
+{
+  "id": "owasp.deserialization.a08",
+  "title": "Unsafe Deserialization of Untrusted Data",
+  "description": "Deserialization of data from an untrusted source using an unsafe mechanism. Unsafe deserialization can lead to remote code execution or privilege escalation.",
+  "policy": {
+    "framework": "owasp",
+    "category": "deserialization",
+    "code": "a08"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["deserialization", "rce", "owasp-top10"],
+  "scope": {
+    "node_kinds": ["function_call"]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-DESER-001"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(pickle\\.loads|pickle\\.load|marshal\\.loads|yaml\\.load|jsonpickle\\.decode|gob\\.NewDecoder|dec\\.Decode|decoder\\.Decode|eval\\(|deserialize\\(|unserialize\\()"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Unsafe deserialization sink '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": ["A08"],
+    "soc2": [],
+    "gdpr": []
+  },
+  "references": [
+    "Prefer safe alternatives: yaml.safe_load(), JSON with a typed schema, or Protocol Buffers.",
+    "Never deserialize data from user-controlled sources without integrity verification.",
+    "If deserialization is unavoidable, validate a cryptographic signature on the payload before decoding."
+  ]
+}

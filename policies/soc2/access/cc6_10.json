@@ -1,0 +1,64 @@
+{
+  "id": "soc2.access.cc6_10",
+  "title": "Path Traversal",
+  "description": "File path construction from user input without sanitization allows attackers to traverse directory boundaries (../) and access files outside the intended scope, violating SOC2 CC6.1 (logical access controls).",
+  "policy": {
+    "framework": "soc2",
+    "category": "access",
+    "code": "cc6_10"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "path-traversal",
+    "file-access",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_interpolation"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(open|read_file|send_file|render_template|include|require|file_get_contents|readFile).*\\.\\./"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(os\\.path\\.join|Path\\(|pathlib).*(?:request|param|user_input|input|argv)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-PATH-TRAVERSAL-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential path traversal via '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1",
+      "CC6.3"
+    ],
+    "owasp": [
+      "A01"
+    ]
+  },
+  "references": [
+    "Use os.path.realpath() or Path.resolve() and verify the result is within the allowed base directory.",
+    "Maintain an explicit allowlist of accessible file paths or use a virtual file system.",
+    "Never concatenate user input directly into file paths; use a parameterized file access layer.",
+    "CWE-22 path traversal is consistently in the OWASP Top 25 Most Dangerous Software Weaknesses."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "owasp.injection.a03_ldap",
+  "title": "LDAP Injection",
+  "description": "Constructing LDAP queries with unescaped user input allows attackers to alter query logic, bypass authentication, or enumerate directory entries (OWASP A03:2021 / CWE-90).",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_ldap"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "ldap-injection",
+    "injection",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_interpolation"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(ldap_search|ldap_bind|DirContext\\.search|ldap\\.search_s|LdapConnection\\.Search).*(?:\\+|format|%s|f\"|f')"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(\\(uid=|\\(cn=|\\(mail=|\\(objectClass=).*(?:\\+|format|%|f\"|f'|\\$\\{)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-LDAP-INJECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential LDAP injection via '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Escape all special LDAP characters: ( ) * \\ NUL / in search filters before use.",
+    "Use LDAP libraries that support parameterized filter construction.",
+    "Validate usernames against a strict allowlist of permitted characters (alphanumeric + limited symbols).",
+    "OWASP LDAP Injection Prevention Cheat Sheet.",
+    "CWE references: CWE-90"
+  ]
+}

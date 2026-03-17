@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.data_protection.art25_2",
+  "title": "Data Protection by Default — Excessive Data Collection",
+  "description": "Collecting more personal data than necessary for the stated purpose violates GDPR Article 25(2) (data protection by default) and Article 5(1)(c) (data minimisation).",
+  "policy": {
+    "framework": "gdpr",
+    "category": "data_protection",
+    "code": "art25_2"
+  },
+  "severity": "medium",
+  "languages": ["*"],
+  "tags": ["data-minimisation", "gdpr-art25", "privacy-by-design"],
+  "scope": {
+    "node_kinds": ["function_call", "dict_literal", "struct_definition"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(SELECT\\s+\\*\\s+FROM.*(?:users|customers|patients|members|persons))" },
+      { "fact": "token", "op": "matches", "value": "(?i)(collect_all|get_all_fields|serialize_all|to_dict\\(\\)|model_dump\\(\\)).*(?:user|customer|patient|person)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-EXCESS-DATA-001" }
+    ]
+  },
+  "finding": {
+    "message": "Potential excessive data collection at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.25(2)", "Art.5(1)(c)"],
+    "soc2": [],
+    "owasp": []
+  },
+  "references": [
+    "Select only the specific fields required for the current operation; avoid SELECT *.",
+    "Define explicit data schemas that expose only necessary attributes to each component.",
+    "Implement attribute-based access control to limit which fields each consumer can read.",
+    "GDPR Article 5(1)(c) mandates data minimisation: data must be adequate, relevant, and limited."
+  ]
+}

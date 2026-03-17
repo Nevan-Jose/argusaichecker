@@ -1,0 +1,64 @@
+{
+  "id": "owasp.config.a05_cors_wildcard",
+  "title": "CORS Wildcard Origin",
+  "description": "Setting Access-Control-Allow-Origin to '*' allows any website to make credentialed cross-origin requests, undermining same-origin protection (OWASP A05:2021 / CWE-942).",
+  "policy": {
+    "framework": "owasp",
+    "category": "config",
+    "code": "a05_cors_wildcard"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "cors",
+    "misconfiguration",
+    "owasp-a05"
+  ],
+  "scope": {},
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Access-Control-Allow-Origin\\s*:\\s*['\"]\\*['\"]|allow_origins\\s*=\\s*\\[?['\"]\\*['\"])"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(CORS.*origins.*\\*|cors\\(origins=['\"]\\*['\"]|cors\\(.*\\*.*\\))"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(res\\.header\\(['\"]Access-Control-Allow-Origin['\"].*['\"]\\*['\"]|response\\.setHeader.*Access-Control.*\\*)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-CORS-WILDCARD-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "CORS wildcard origin '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A05"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Specify explicit allowed origins rather than using wildcards.",
+    "Never combine Access-Control-Allow-Origin: * with Access-Control-Allow-Credentials: true.",
+    "Validate the Origin header against an allowlist at the application layer.",
+    "OWASP CORS Misconfiguration guide.",
+    "CWE references: CWE-942, CWE-346"
+  ]
+}

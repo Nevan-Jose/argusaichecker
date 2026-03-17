@@ -1,0 +1,61 @@
+{
+  "id": "owasp.injection.a03_ssti",
+  "title": "Server-Side Template Injection",
+  "description": "Rendering user-supplied content through a template engine without sanitization can lead to SSTI, allowing remote code execution (OWASP A03:2021 / CWE-94).",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_ssti"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "ssti",
+    "template-injection",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Environment\\.from_string|render_template_string|Template\\(.*(?:request|input|user|param)|Mustache\\.render.*(?:request|input))"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(jinja2\\.Template|jinja2\\.Environment.*from_string|mako\\.Template.*(?:request|param))"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SSTI-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential SSTI via user-controlled template input at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": []
+  },
+  "references": [
+    "Never pass user-controlled strings to template engines as template content.",
+    "Use sandboxed template environments if user templates are required (Jinja2 SandboxedEnvironment).",
+    "Separate template logic from user-provided data; use parameterized rendering.",
+    "OWASP SSTI prevention and testing guidance.",
+    "CWE references: CWE-94, CWE-1336"
+  ]
+}

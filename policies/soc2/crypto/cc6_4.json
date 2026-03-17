@@ -1,0 +1,65 @@
+{
+  "id": "soc2.crypto.cc6_4",
+  "title": "Weak Cryptographic Hash",
+  "description": "Use of MD5 or SHA-1 for data integrity or digital signatures violates SOC2 CC6.7 (transmission protection) and CC6.6 (logical access). These algorithms are broken for cryptographic integrity purposes.",
+  "policy": {
+    "framework": "soc2",
+    "category": "crypto",
+    "code": "cc6_4"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "crypto",
+    "hash",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(hashlib\\.md5|hashlib\\.sha1|MD5|SHA1|SHA-1|\"md5\"|\"sha1\"|'md5'|'sha1')"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(crypto\\.createHash\\(['\"](?:md5|sha1)['\"]|MessageDigest\\.getInstance\\(['\"](?:MD5|SHA-?1)['\"])"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-WEAK-HASH-002"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak cryptographic hash '{{token}}' used in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.6",
+      "CC6.7"
+    ],
+    "owasp": [
+      "A02"
+    ]
+  },
+  "references": [
+    "Replace MD5/SHA-1 with SHA-256 or SHA-3 for data integrity checks.",
+    "For digital signatures, use SHA-256 or stronger as the digest algorithm.",
+    "MD5 and SHA-1 are collision-vulnerable; avoid for any security-critical operation.",
+    "NIST formally deprecated SHA-1 for digital signatures in 2022 (NIST SP 800-131A Rev 2).",
+    "CWE references: CWE-327, CWE-328"
+  ]
+}

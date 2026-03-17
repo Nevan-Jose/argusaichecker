@@ -1,0 +1,45 @@
+{
+  "id": "owasp.execution.a09",
+  "title": "Dangerous Shell or OS Command Execution",
+  "description": "Shell or OS command execution sink that may receive user-controlled input, enabling OS command injection.",
+  "policy": {
+    "framework": "owasp",
+    "category": "execution",
+    "code": "a09"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["injection", "command-injection", "rce", "owasp-top10"],
+  "scope": {
+    "node_kinds": ["function_call"]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-EXEC-001"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(^exec$|execSync|spawnSync|os\\.system|os\\.popen|subprocess\\.call|subprocess\\.run|subprocess\\.Popen|exec\\.Command|syscall\\.Exec)"
+      }
+    ]
+  },
+  "finding": {
+    "message": "OS command execution sink '{{token}}' detected in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": ["A03"],
+    "soc2": [],
+    "gdpr": []
+  },
+  "references": [
+    "Pass arguments as a list (not a shell string) and disable shell expansion.",
+    "Validate all inputs against a strict allowlist before passing to any shell sink.",
+    "Prefer higher-level library APIs over direct shell invocation whenever possible."
+  ]
+}

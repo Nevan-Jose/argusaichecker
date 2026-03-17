@@ -1,0 +1,72 @@
+{
+  "id": "soc2.auth.cc6_2",
+  "title": "Authentication Bypass",
+  "description": "Code patterns that unconditionally return true for authentication checks, skip token validation, or disable authentication middleware violate SOC2 CC6.1 and CC6.2 logical access controls.",
+  "policy": {
+    "framework": "soc2",
+    "category": "auth",
+    "code": "cc6_2"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "auth-bypass",
+    "authentication",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_definition",
+      "return_statement",
+      "assignment"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(verify\\s*=\\s*false|ssl_verify\\s*=\\s*false|verify_ssl\\s*=\\s*false|InsecureSkipVerify\\s*:\\s*true)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(authenticate|is_authenticated|check_auth|verify_token)\\s*[=:]{1,2}\\s*(true|1)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)skip_authentication|bypass_auth|no_auth|auth_disabled"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-AUTH-BYPASS-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Authentication bypass pattern '{{token}}' detected in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1",
+      "CC6.2",
+      "CC6.3"
+    ],
+    "owasp": [
+      "A07"
+    ]
+  },
+  "references": [
+    "Never hardcode authentication results to true; always evaluate credentials against the identity provider.",
+    "Remove debug/development auth bypass code before merging to main or production branches.",
+    "Implement mandatory authentication middleware that cannot be bypassed via configuration flags.",
+    "Use feature flags with a secrets manager rather than code-level bypass switches.",
+    "CWE references: CWE-287, CWE-306"
+  ]
+}

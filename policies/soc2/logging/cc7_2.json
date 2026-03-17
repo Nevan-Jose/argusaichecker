@@ -1,0 +1,64 @@
+{
+  "id": "soc2.logging.cc7_2",
+  "title": "Verbose Error Messages Exposing Internal State",
+  "description": "Returning or logging full stack traces, SQL errors, or internal exception details to end users violates SOC2 CC7.2. This information aids attackers in reconnaissance and can expose architecture details.",
+  "policy": {
+    "framework": "soc2",
+    "category": "logging",
+    "code": "cc7_2"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "error-handling",
+    "information-disclosure",
+    "soc2-cc7"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "return_statement"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(traceback\\.print_exc|traceback\\.format_exc|e\\.printStackTrace|debug\\s*=\\s*True|DEBUG\\s*=\\s*True|app\\.run\\(debug\\s*=\\s*True)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(render_template.*500|JsonResponse.*traceback|return.*exception|response.*stack_trace)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-VERBOSE-ERR-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Verbose error disclosure '{{token}}' in {{file}} at line {{line}} may leak internal state.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC7.2"
+    ],
+    "owasp": [
+      "A05"
+    ]
+  },
+  "references": [
+    "Return generic error messages to users; log the full detail server-side with a correlation ID.",
+    "Disable debug mode and verbose error pages in production configuration.",
+    "Implement a global exception handler that sanitizes responses.",
+    "Use structured error logging with severity levels and correlation IDs for traceability without exposure.",
+    "CWE references: CWE-209"
+  ]
+}

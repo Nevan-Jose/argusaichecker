@@ -1,0 +1,38 @@
+{
+  "id": "gdpr.security.art32_1",
+  "title": "Inadequate Encryption of Personal Data in Transit",
+  "description": "Transmitting personal data over unencrypted connections violates GDPR Article 32(1)(a), which requires appropriate technical measures including encryption of personal data.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "security",
+    "code": "art32_1"
+  },
+  "severity": "critical",
+  "languages": ["*"],
+  "tags": ["encryption", "tls", "data-in-transit", "gdpr-art32"],
+  "scope": {},
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(verify\\s*=\\s*False|InsecureSkipVerify\\s*:\\s*true|rejectUnauthorized\\s*:\\s*false|ALLOW_CLEARTEXT_TRAFFIC)" },
+      { "fact": "token", "op": "matches", "value": "http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(smtplib\\.SMTP\\((?!.*465|.*587)|ftplib\\.FTP\\((?!.*TLS|.*ssl))" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-UNENCRYPTED-TRANSIT-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data may be transmitted without encryption at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.32(1)(a)"],
+    "soc2": ["CC6.7"],
+    "owasp": ["A02"]
+  },
+  "references": [
+    "Enforce TLS 1.2+ for all connections carrying personal data.",
+    "Disable SSL/TLS verification bypass flags; install proper certificates instead.",
+    "Use SMTP with STARTTLS/SMTPS; avoid plaintext SMTP on port 25 for personal data.",
+    "GDPR Article 32(1)(a) explicitly names encryption as an appropriate security measure."
+  ]
+}

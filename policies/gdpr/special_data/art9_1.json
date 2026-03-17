@@ -1,0 +1,40 @@
+{
+  "id": "gdpr.special_data.art9_1",
+  "title": "Processing of Special Category Personal Data Without Explicit Controls",
+  "description": "Processing special categories of data (health, biometric, racial/ethnic origin, political opinions, religion, sex life) without explicit consent or legal basis violates GDPR Article 9(1).",
+  "policy": {
+    "framework": "gdpr",
+    "category": "special_data",
+    "code": "art9_1"
+  },
+  "severity": "critical",
+  "languages": ["*"],
+  "tags": ["special-categories", "sensitive-data", "health-data", "gdpr-art9"],
+  "scope": {
+    "node_kinds": ["assignment", "function_call", "dict_literal", "struct_definition"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(health_condition|medical_record|diagnosis|prescription|biometric|dna|genetic|ethnicity|racial_origin|religion|political_opinion|sexual_orientation|sex_life|trade_union)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(process_health|store_medical|save_biometric|collect_genetic|record_diagnosis)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-SPECIAL-DATA-001" }
+    ]
+  },
+  "finding": {
+    "message": "Potential special category personal data processing at '{{token}}' in {{file}} at line {{line}}. Verify lawful basis.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.9(1)", "Art.9(2)", "Art.22"],
+    "soc2": ["CC6.1"],
+    "owasp": ["A02"]
+  },
+  "references": [
+    "Document the explicit legal basis under Art.9(2) for processing (explicit consent, vital interests, health care provision, etc.).",
+    "Apply enhanced encryption and access controls to special category data.",
+    "Conduct a Data Protection Impact Assessment (DPIA) per Article 35 before processing special categories at scale.",
+    "Restrict access to special category data to the minimum number of personnel with a documented need.",
+    "GDPR Article 9(1) prohibits processing special categories except under specific conditions in Article 9(2)."
+  ]
+}

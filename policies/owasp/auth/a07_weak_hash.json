@@ -1,0 +1,70 @@
+{
+  "id": "owasp.auth.a07_weak_hash",
+  "title": "Weak Password Hash Algorithm",
+  "description": "Using MD5, SHA-1, or SHA-256 for password storage makes credentials recoverable through brute force or rainbow tables (OWASP A07:2021 / CWE-916). Password hashing requires slow, adaptive algorithms.",
+  "policy": {
+    "framework": "owasp",
+    "category": "auth",
+    "code": "a07_weak_hash"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "password-hashing",
+    "crypto",
+    "owasp-a07"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(hashlib\\.(md5|sha1|sha256).*password|password.*hashlib\\.(md5|sha1|sha256))"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(MD5|SHA1|SHA-1|SHA256).*(?:password|passwd|pwd|credential)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(crypt\\.crypt|crypt\\.METHOD_MD5|crypt\\.METHOD_SHA256)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-WEAK-PW-HASH-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak password hash '{{token}}' used in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A07",
+      "A02"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Use bcrypt (cost \u2265 12), Argon2id (m=65536, t=3, p=4), or scrypt for password hashing.",
+    "The Python 'secrets' module and 'passlib' library provide safe, audited implementations.",
+    "OWASP Password Storage Cheat Sheet provides implementation-level guidance.",
+    "NIST SP 800-63B Section 5.1.1 covers memorized secret verifiers.",
+    "CWE references: CWE-916, CWE-328"
+  ]
+}

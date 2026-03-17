@@ -1,0 +1,59 @@
+{
+  "id": "soc2.transport.cc6_8",
+  "title": "Plaintext HTTP Transmission",
+  "description": "Sending sensitive data (credentials, PII, session tokens) over unencrypted HTTP violates SOC2 CC6.7. All data in transit must be encrypted using TLS.",
+  "policy": {
+    "framework": "soc2",
+    "category": "transport",
+    "code": "cc6_8"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "http",
+    "plaintext",
+    "transport",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0|\\[::1\\])"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-HTTP-PLAIN-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Plaintext HTTP URL '{{token}}' found in {{file}} at line {{line}}. Use HTTPS.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.7"
+    ],
+    "owasp": [
+      "A02"
+    ]
+  },
+  "references": [
+    "Replace all non-localhost http:// URLs with https://.",
+    "Enforce HTTPS at the infrastructure level with HSTS headers (Strict-Transport-Security).",
+    "Use certificate pinning for mobile/desktop clients that connect to known endpoints.",
+    "Configure HTTP-to-HTTPS redirect at the load balancer or reverse proxy.",
+    "CWE references: CWE-319"
+  ]
+}

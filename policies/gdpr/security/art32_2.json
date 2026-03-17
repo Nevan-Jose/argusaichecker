@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.security.art32_2",
+  "title": "Absence of Integrity Controls on Personal Data",
+  "description": "Storing or transmitting personal data without integrity verification (HMAC, digital signature, or authenticated encryption) exposes it to undetected tampering, violating GDPR Article 32(1)(b) (integrity and confidentiality).",
+  "policy": {
+    "framework": "gdpr",
+    "category": "security",
+    "code": "art32_2"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["integrity", "hmac", "gdpr-art32"],
+  "scope": {
+    "node_kinds": ["function_call", "assignment"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(json\\.dumps|pickle\\.dumps|serialize|marshal\\.dumps).*(?:personal|user|patient|customer)(?!.*hmac|.*sign|.*encrypt)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(write|save|store|insert).*(?:personal_data|user_data|pii)(?!.*encrypt|.*sign|.*mac)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-NO-INTEGRITY-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data stored/transmitted without apparent integrity control at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.32(1)(b)"],
+    "soc2": ["CC6.7"],
+    "owasp": ["A02"]
+  },
+  "references": [
+    "Use authenticated encryption (AES-GCM, ChaCha20-Poly1305) which provides both confidentiality and integrity.",
+    "Add an HMAC-SHA256 to serialized personal data payloads before storage or transmission.",
+    "GDPR Article 32(1)(b) requires 'the ongoing integrity and confidentiality of processing systems'.",
+    "For database records, consider row-level checksums or application-level signing."
+  ]
+}

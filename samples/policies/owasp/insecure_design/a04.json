@@ -1,0 +1,43 @@
+{
+  "id": "owasp.insecure_design.a04",
+  "title": "Weak or Broken Cryptographic Primitive",
+  "description": "Use of a cryptographically broken or weak algorithm (MD5, SHA-1, DES, RC4, ECB mode). These algorithms are vulnerable to collision or brute-force attacks.",
+  "policy": {
+    "framework": "owasp",
+    "category": "insecure_design",
+    "code": "a04"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["crypto", "algorithm", "owasp-top10"],
+  "scope": {},
+  "match": {
+    "any": [
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-CRYPTO-001"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(hashlib\\.md5|hashlib\\.sha1|md5\\.new|sha\\.new|createHash\\(['\"]md5['\"]|createHash\\(['\"]sha1['\"]|DES\\.new|RC4|modes\\.ECB|AES\\.MODE_ECB|md5\\.Sum|sha1\\.Sum)"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak cryptographic primitive '{{token}}' used in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": ["A02"],
+    "soc2": [],
+    "gdpr": []
+  },
+  "references": [
+    "Replace MD5/SHA-1 with SHA-256 or SHA-3 for integrity; use bcrypt, scrypt, or Argon2id for password hashing.",
+    "Replace DES/RC4 with AES-256-GCM or ChaCha20-Poly1305 for symmetric encryption.",
+    "Never use ECB mode; prefer authenticated encryption modes (GCM, CCM)."
+  ]
+}

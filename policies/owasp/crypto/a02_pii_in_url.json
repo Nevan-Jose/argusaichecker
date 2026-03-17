@@ -1,0 +1,66 @@
+{
+  "id": "owasp.crypto.a02_pii_in_url",
+  "title": "Sensitive Data Transmitted in URL",
+  "description": "Placing sensitive data (passwords, tokens, PII) in URL query parameters exposes it in server logs, browser history, and HTTP Referer headers (OWASP A02:2021 / CWE-598).",
+  "policy": {
+    "framework": "owasp",
+    "category": "crypto",
+    "code": "a02_pii_in_url"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "pii",
+    "url",
+    "data-exposure",
+    "owasp-a02"
+  ],
+  "scope": {
+    "node_kinds": [
+      "string_interpolation",
+      "string_literal",
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(?:url|href|redirect|location).*(?:password|passwd|secret|token|ssn|credit_card|dob|email)\\s*=\\s*(?:\\{|%s|\\$)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)\\?(password|passwd|token|secret|api_key|ssn|credit_card)="
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-PII-URL-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Sensitive data in URL parameter '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A02"
+    ],
+    "soc2": [
+      "CC6.7"
+    ]
+  },
+  "references": [
+    "Pass sensitive data in the request body (POST/PUT) or in encrypted headers, never in URL query strings.",
+    "Ensure server logs are configured to mask or exclude sensitive query parameters.",
+    "Use short-lived, opaque tokens in URLs when redirect flows require passing state.",
+    "OWASP Transport Layer Security Cheat Sheet.",
+    "CWE references: CWE-598, CWE-200"
+  ]
+}

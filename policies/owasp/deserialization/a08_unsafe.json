@@ -1,0 +1,68 @@
+{
+  "id": "owasp.deserialization.a08_unsafe",
+  "title": "Unsafe Deserialization of Untrusted Data",
+  "description": "Using unsafe deserialization libraries on untrusted data can lead to remote code execution, privilege escalation, or denial of service (OWASP A08:2021 / CWE-502).",
+  "policy": {
+    "framework": "owasp",
+    "category": "deserialization",
+    "code": "a08_unsafe"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "deserialization",
+    "rce",
+    "owasp-a08"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(pickle\\.loads|pickle\\.load|marshal\\.loads|yaml\\.load\\(|jsonpickle\\.decode)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(ObjectInputStream|readObject|XStream\\.fromXML|BinaryFormatter\\.Deserialize|JsonConvert\\.DeserializeObject)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(unserialize\\(|PHP_SERIALIZE|gob\\.NewDecoder|dec\\.Decode)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-DESER-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Unsafe deserialization at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A08"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Use safe alternatives: yaml.safe_load() (Python), JSON + typed schemas, Protocol Buffers, MessagePack.",
+    "Never deserialize data from untrusted sources without verifying an HMAC or digital signature first.",
+    "If Java ObjectInputStream is required, use a deserialization filter (JEP 415 / ObjectInputFilter).",
+    "OWASP Deserialization Cheat Sheet.",
+    "CWE references: CWE-502"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "id": "soc2.transport.cc6_7",
+  "title": "TLS Verification Disabled",
+  "description": "Disabling TLS/SSL certificate verification exposes data in transit to MITM attacks, violating SOC2 CC6.7 (transmission of information). This is a critical misconfiguration often introduced during development and left in production.",
+  "policy": {
+    "framework": "soc2",
+    "category": "transport",
+    "code": "cc6_7"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "tls",
+    "ssl",
+    "mitm",
+    "soc2-cc6"
+  ],
+  "scope": {},
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(verify\\s*=\\s*False|ssl_verify\\s*=\\s*False|verify_ssl\\s*=\\s*False|check_hostname\\s*=\\s*False|VERIFY_NONE)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(InsecureSkipVerify\\s*:\\s*true|TLSClientConfig.*InsecureSkipVerify|rejectUnauthorized\\s*:\\s*false)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(setSSLSocketFactory|ALLOW_ALL_HOSTNAME_VERIFIER|NullHostnameVerifier|NoopHostnameVerifier)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-TLS-SKIP-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "TLS verification disabled via '{{token}}' in {{file}} at line {{line}}. This allows MITM attacks.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.7"
+    ],
+    "owasp": [
+      "A02",
+      "A05"
+    ]
+  },
+  "references": [
+    "Never disable certificate verification in production code.",
+    "For development against self-signed certificates, install the certificate into your trust store instead of disabling verification.",
+    "Use environment-specific configuration that enables verification for non-development environments.",
+    "NIST SP 800-52 Rev 2 provides TLS configuration guidance.",
+    "CWE references: CWE-295"
+  ]
+}

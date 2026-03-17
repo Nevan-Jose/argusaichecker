@@ -1,0 +1,58 @@
+{
+  "id": "soc2.crypto.cc6_6",
+  "title": "Insecure Pseudo-Random Number Generator",
+  "description": "Use of non-cryptographic PRNGs (Math.random, rand(), random.random) for security-sensitive operations (token generation, nonces, key material) violates SOC2 CC6.1. These generators are predictable.",
+  "policy": {
+    "framework": "soc2",
+    "category": "crypto",
+    "code": "cc6_6"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "crypto",
+    "prng",
+    "randomness",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Math\\.random|random\\.random\\(|random\\.randint|rand\\(\\)|std::rand|srand\\(|mt_rand|lcg_value)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-PRNG-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Insecure PRNG '{{token}}' used in security context in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1"
+    ],
+    "owasp": [
+      "A02"
+    ]
+  },
+  "references": [
+    "Use a cryptographically secure RNG: os.urandom(), secrets module (Python), crypto.randomBytes() (Node.js), rand::thread_rng() with OsRng (Rust), java.security.SecureRandom (Java).",
+    "Never use Math.random(), rand(), or random.random() for tokens, nonces, salts, or session IDs.",
+    "NIST SP 800-90A defines approved DRBG constructs.",
+    "CWE references: CWE-338, CWE-330"
+  ]
+}

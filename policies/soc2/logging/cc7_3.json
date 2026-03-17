@@ -1,0 +1,65 @@
+{
+  "id": "soc2.logging.cc7_3",
+  "title": "Swallowed Exceptions Hiding Security Events",
+  "description": "Empty catch blocks or exception handlers that silently suppress errors can hide security-relevant events (auth failures, access denials), violating SOC2 CC7.2 monitoring requirements.",
+  "policy": {
+    "framework": "soc2",
+    "category": "logging",
+    "code": "cc7_3"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "error-handling",
+    "exception-swallowing",
+    "soc2-cc7"
+  ],
+  "scope": {
+    "node_kinds": [
+      "catch_clause",
+      "except_clause"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(except\\s+Exception\\s*:\\s*pass|catch\\s*\\(.*\\)\\s*\\{\\s*\\}|rescue\\s+=>\\s*nil|catch\\s*\\{\\s*\\})"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(except:$|except Exception:$)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SWALLOWED-EXC-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Swallowed exception '{{token}}' in {{file}} at line {{line}} may hide security events.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC7.2",
+      "CC4.1"
+    ],
+    "owasp": [
+      "A09"
+    ]
+  },
+  "references": [
+    "At minimum, log the exception with context (user, operation, timestamp) before suppressing.",
+    "For security-critical operations (login, permission checks), propagate exceptions or return explicit error responses.",
+    "Use a catch-all exception handler at the framework level to ensure all errors are logged.",
+    "Consider alerting on high-frequency exception suppression patterns via your SIEM.",
+    "CWE references: CWE-390, CWE-391"
+  ]
+}

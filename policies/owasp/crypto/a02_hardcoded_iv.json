@@ -1,0 +1,71 @@
+{
+  "id": "owasp.crypto.a02_hardcoded_iv",
+  "title": "Hardcoded or Static IV/Nonce",
+  "description": "Using a static or hardcoded initialization vector (IV) or nonce in symmetric encryption defeats the security of the cipher, allowing plaintext recovery through ciphertext analysis (OWASP A02:2021 / CWE-329).",
+  "policy": {
+    "framework": "owasp",
+    "category": "crypto",
+    "code": "a02_hardcoded_iv"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "iv",
+    "nonce",
+    "crypto",
+    "owasp-a02"
+  ],
+  "scope": {
+    "node_kinds": [
+      "assignment",
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(iv\\s*=\\s*b?['\"][0-9a-fA-F\\\\x]{8,}['\"]|nonce\\s*=\\s*b?['\"][0-9a-fA-F\\\\x]{8,}['\"])"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(IV\\s*=\\s*(?:0x|b?['\"])[0-9a-fA-F]{8,}|static.*(?:iv|nonce).*=.*(?:0x|['\"])[0-9a-fA-F]{8,})"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(AES\\.new|Cipher\\.getInstance).*\\\\x00{8,}"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-STATIC-IV-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Hardcoded IV or nonce '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A02"
+    ],
+    "soc2": [
+      "CC6.7"
+    ]
+  },
+  "references": [
+    "Generate a fresh random IV/nonce for every encryption operation using a CSPRNG.",
+    "For AES-GCM, use a 96-bit (12-byte) random nonce; for AES-CBC, use a 128-bit random IV.",
+    "Prepend the IV/nonce to the ciphertext so the decrypting party can extract it.",
+    "Never reuse a nonce with the same key in GCM/CTR modes \u2014 this is catastrophic.",
+    "CWE references: CWE-329, CWE-330"
+  ]
+}

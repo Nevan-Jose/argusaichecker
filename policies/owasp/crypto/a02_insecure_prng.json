@@ -1,0 +1,64 @@
+{
+  "id": "owasp.crypto.a02_insecure_prng",
+  "title": "Cryptographically Insecure PRNG",
+  "description": "Using non-cryptographic random number generators for security-sensitive values (tokens, session IDs, nonces, salts) produces predictable output (OWASP A02:2021 / CWE-338).",
+  "policy": {
+    "framework": "owasp",
+    "category": "crypto",
+    "code": "a02_insecure_prng"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "prng",
+    "randomness",
+    "owasp-a02"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Math\\.random\\(|random\\.random\\(|random\\.randint|random\\.choice|rand\\(\\)|srand\\(|mt_rand\\(|lcg_value\\()"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(std::rand|rand::thread_rng.*not.*OsRng|new Random\\()"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-PRNG-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Insecure PRNG '{{token}}' in {{file}} at line {{line}} \u2014 use a CSPRNG for security contexts.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A02"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Python: use secrets.token_bytes(), secrets.token_hex(), or os.urandom().",
+    "Node.js: use crypto.randomBytes() from the built-in crypto module.",
+    "Java: use java.security.SecureRandom; never use java.util.Random for security.",
+    "Rust: use rand::rngs::OsRng or getrandom::getrandom().",
+    "Go: use crypto/rand, not math/rand.",
+    "CWE references: CWE-338, CWE-330"
+  ]
+}

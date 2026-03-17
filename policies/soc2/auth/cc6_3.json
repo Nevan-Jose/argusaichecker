@@ -1,0 +1,39 @@
+{
+  "id": "soc2.auth.cc6_3",
+  "title": "Weak Password Hashing",
+  "description": "Use of MD5, SHA-1, or SHA-256 for password hashing violates SOC2 CC6.1. These algorithms are not designed for password storage and are vulnerable to brute-force and rainbow table attacks.",
+  "policy": {
+    "framework": "soc2",
+    "category": "auth",
+    "code": "cc6_3"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["crypto", "password-hashing", "soc2-cc6"],
+  "scope": {
+    "node_kinds": ["function_call", "string_literal"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(hashlib\\.md5|hashlib\\.sha1|hashlib\\.sha256|MD5\\.digest|SHA1\\.digest|DigestUtils\\.md5|MessageDigest\\.getInstance\\([\"'](?:MD5|SHA-?1|SHA-?256)[\"'])" },
+      { "fact": "token", "op": "matches", "value": "(?i)(password_hash|crypt).*(?:md5|sha1|sha256|des|md4)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-WEAK-HASH-001" }
+    ]
+  },
+  "finding": {
+    "message": "Weak password hashing algorithm used at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": ["CC6.1"],
+    "owasp": ["A02", "A07"]
+  },
+  "references": [
+    "Use bcrypt, Argon2id, or scrypt for password hashing — these are designed to be slow and resistant to GPU attacks.",
+    "Migration path: on next successful login, re-hash the password with the new algorithm.",
+    "Never use general-purpose hash functions (MD5, SHA-*) for passwords; they are too fast.",
+    "Set work factors: bcrypt cost ≥ 12, Argon2id memory ≥ 64 MiB, iterations ≥ 3.",
+    "CWE references: CWE-916, CWE-328"
+  ]
+}

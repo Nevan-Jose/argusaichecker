@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.data_protection.art25_1",
+  "title": "Data Protection by Design — Encryption at Rest Missing",
+  "description": "Storing personal data without encryption violates GDPR Article 25(1) (data protection by design and by default). Personal data at rest must be protected with appropriate technical measures.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "data_protection",
+    "code": "art25_1"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["encryption", "data-at-rest", "gdpr-art25", "privacy-by-design"],
+  "scope": {
+    "node_kinds": ["function_call", "assignment"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(open\\(['\"].*\\.db['\"]|sqlite3\\.connect|psycopg2\\.connect|mysql\\.connector\\.connect)(?!.*ssl|.*encrypt)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(write.*(?:email|ssn|address|phone|dob|name)|store.*(?:personal_data|pii|user_data))(?!.*encrypt|.*hash|.*mask)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-UNENCRYPTED-STORE-001" }
+    ]
+  },
+  "finding": {
+    "message": "Potential unencrypted personal data storage at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.25(1)", "Art.32"],
+    "soc2": ["CC6.7"],
+    "owasp": ["A02"]
+  },
+  "references": [
+    "Encrypt personal data at rest using AES-256; manage keys via a dedicated KMS.",
+    "Apply field-level encryption for particularly sensitive attributes (SSN, health data, financial data).",
+    "Implement database-level Transparent Data Encryption (TDE) as a baseline.",
+    "GDPR Article 25(1) requires technical measures to implement data minimization and protection by design."
+  ]
+}

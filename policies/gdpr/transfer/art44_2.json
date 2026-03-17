@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.transfer.art44_2",
+  "title": "Personal Data Logged with Cross-Border Transmission Risk",
+  "description": "Logging personal data that may be shipped to a centralised logging service in a non-EEA region constitutes a data transfer requiring GDPR Article 44 compliance.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "transfer",
+    "code": "art44_2"
+  },
+  "severity": "medium",
+  "languages": ["*"],
+  "tags": ["logging", "data-transfer", "gdpr-art44"],
+  "scope": {
+    "node_kinds": ["function_call"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(datadog|splunk|elastic|logstash|sumologic|cloudwatch|stackdriver|papertrail).*(?:email|ssn|name|dob|ip_address|user_id)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(logger\\.info|log\\.info|logging\\.info).*(?:email|ssn|name|dob|phone|address|credit_card)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-PII-LOG-TRANSFER-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data in log statement may be transferred cross-border at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.44", "Art.5(1)(f)"],
+    "soc2": ["CC7.2"],
+    "owasp": ["A09"]
+  },
+  "references": [
+    "Redact personal data before sending logs to third-party aggregators.",
+    "Ensure log shipping infrastructure is covered by your DPA and transfer mechanisms.",
+    "Use EU-hosted log infrastructure or verify your logging SaaS provider has signed EU SCCs.",
+    "GDPR Article 28 requires a Data Processing Agreement with all processors."
+  ]
+}

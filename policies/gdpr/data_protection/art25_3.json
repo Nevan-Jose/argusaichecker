@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.data_protection.art25_3",
+  "title": "Personal Data Pseudonymisation Absent",
+  "description": "Processing personal data without pseudonymisation where it is technically feasible conflicts with GDPR Article 25(1) (privacy by design) and Article 5(1)(e) (storage limitation).",
+  "policy": {
+    "framework": "gdpr",
+    "category": "data_protection",
+    "code": "art25_3"
+  },
+  "severity": "medium",
+  "languages": ["*"],
+  "tags": ["pseudonymisation", "anonymisation", "gdpr-art25"],
+  "scope": {
+    "node_kinds": ["function_call", "assignment", "dict_literal"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(user_id|customer_id|patient_id|person_id)\\s*=\\s*(?:request|input|param).*(?:name|email|ssn|dob|address)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(analytics|telemetry|metrics|event_tracking).*(?:email|name|ssn|user_id|ip_address)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-NO-PSEUDONYM-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data used without pseudonymisation at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.25(1)", "Art.5(1)(e)", "Art.89"],
+    "soc2": [],
+    "owasp": []
+  },
+  "references": [
+    "Replace direct identifiers with pseudonymous tokens in analytics and monitoring systems.",
+    "Use a token vault to map pseudonymous IDs to real identifiers, with strict access controls.",
+    "Hash or tokenize user IDs in logs, analytics events, and telemetry payloads.",
+    "GDPR Recital 78 emphasises pseudonymisation as a key privacy-by-design technique."
+  ]
+}

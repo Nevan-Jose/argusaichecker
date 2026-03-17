@@ -1,0 +1,64 @@
+{
+  "id": "soc2.execution.cc6_9",
+  "title": "Unsafe OS Command Execution",
+  "description": "Constructing OS commands from user-controlled input via subprocess, exec, or shell=True violates SOC2 CC6.1 and CC6.8 (change management). OS command injection can lead to full system compromise.",
+  "policy": {
+    "framework": "soc2",
+    "category": "execution",
+    "code": "cc6_9"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "command-injection",
+    "os-exec",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(subprocess\\.call|subprocess\\.run|subprocess\\.Popen|os\\.system|os\\.popen|exec\\(|eval\\(|shell_exec|passthru|system\\()"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Runtime\\.exec|ProcessBuilder|child_process\\.exec|child_process\\.spawn|exec\\.Command)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-CMD-EXEC-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "OS command execution via '{{token}}' in {{file}} at line {{line}}. Verify input is not user-controlled.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1",
+      "CC6.8"
+    ],
+    "owasp": [
+      "A03"
+    ]
+  },
+  "references": [
+    "Pass commands as array arguments, never as a shell string; use shell=False in Python.",
+    "Validate and whitelist all inputs used in command construction.",
+    "Use parameterized command APIs instead of string concatenation.",
+    "Consider sandboxing: run subprocess commands in a restricted container or with minimal permissions.",
+    "CWE references: CWE-78, CWE-88"
+  ]
+}

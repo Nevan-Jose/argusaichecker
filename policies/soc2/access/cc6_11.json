@@ -1,0 +1,64 @@
+{
+  "id": "soc2.access.cc6_11",
+  "title": "Unsafe Deserialization",
+  "description": "Deserializing untrusted data using pickle, marshal, yaml.load, or similar unsafe mechanisms can lead to arbitrary code execution, violating SOC2 CC6.1 and CC6.8.",
+  "policy": {
+    "framework": "soc2",
+    "category": "access",
+    "code": "cc6_11"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "deserialization",
+    "rce",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(pickle\\.loads|pickle\\.load|marshal\\.loads|yaml\\.load\\(|jsonpickle\\.decode|unserialize\\(|PHP_SERIALIZE)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(ObjectInputStream|readObject|XStream\\.fromXML|BinaryFormatter\\.Deserialize|JsonConvert\\.DeserializeObject)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-DESER-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Unsafe deserialization sink '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1",
+      "CC6.8"
+    ],
+    "owasp": [
+      "A08"
+    ]
+  },
+  "references": [
+    "Use safe alternatives: yaml.safe_load() instead of yaml.load(), JSON with typed schemas, Protocol Buffers.",
+    "Never deserialize data received over the network without verifying a cryptographic signature first.",
+    "If pickle/marshal is unavoidable, restrict to data from trusted internal sources only.",
+    "Consider signing serialized payloads with an HMAC before transmission.",
+    "CWE references: CWE-502"
+  ]
+}

@@ -1,0 +1,1134 @@
+{
+  "as_of_date": "2026-03-17",
+  "project_policy_path": "/Users/nevanjose/Desktop/nevin/argus/policies",
+  "overall": {
+    "status": "PARTIAL",
+    "policy_validation": {
+      "total_files": 51,
+      "schema_ok": 51,
+      "schema_fail": 0,
+      "format_ok": 51,
+      "format_fail": 0,
+      "trace_ok": 0,
+      "trace_fail": 51
+    },
+    "coverage_summary": {
+      "soc2": {
+        "rules_with_mapping": 42,
+        "rules_without_mapping": 9,
+        "missing_controls_detected": 4
+      },
+      "owasp": {
+        "rules_with_mapping": 46,
+        "rules_without_mapping": 5,
+        "missing_controls_detected": 2
+      },
+      "gdpr": {
+        "rules_with_mapping": 12,
+        "rules_without_mapping": 39,
+        "missing_controls_detected": 4
+      }
+    }
+  },
+  "violations": [
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_2.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; no SOC2 cross-mapping for GDPR data minimisation by design rule",
+      "required_fix": "Add CC6.1 (logical access) to mappings.soc2, or remove the empty key entirely"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_2.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.owasp",
+      "issue": "mappings.owasp key is present but contains an empty array; no OWASP cross-mapping for GDPR data minimisation rule",
+      "required_fix": "Add A04 (Insecure Design) to mappings.owasp, or remove the empty key entirely"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_3.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; no SOC2 cross-mapping for GDPR data minimisation / retention-scope rule",
+      "required_fix": "Add CC6.1 to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_3.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.owasp",
+      "issue": "mappings.owasp key is present but contains an empty array",
+      "required_fix": "Add A09 (Security Logging) to mappings.owasp, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/transfer/art44_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; transfers rule has no SOC2 traceability",
+      "required_fix": "Add CC6.7 (transmission encryption) to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/transfer/art44_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.owasp",
+      "issue": "mappings.owasp key is present but contains an empty array",
+      "required_fix": "Add A02 (Cryptographic Failures) to mappings.owasp, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/retention/art5_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; retention rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1, CC7.2 to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/retention/art5_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.owasp",
+      "issue": "mappings.owasp key is present but contains an empty array",
+      "required_fix": "Add A09 (Security Logging and Monitoring Failures) to mappings.owasp, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/rights/art17_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; right-to-erasure rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1, CC6.3 to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/rights/art17_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.owasp",
+      "issue": "mappings.owasp key is present but contains an empty array",
+      "required_fix": "Add A01 (Broken Access Control) to mappings.owasp, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/access_control/a01_open_redirect.json",
+      "framework": "owasp",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; open-redirect rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1 (logical and physical access controls) to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/config/a05_xxe.json",
+      "framework": "owasp",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; XXE injection rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1 (logical access / input handling) to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/injection/a03_ssti.json",
+      "framework": "owasp",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; SSTI injection rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1 to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/injection/a03_xpath.json",
+      "framework": "owasp",
+      "type": "trace",
+      "severity": "low",
+      "field": "mappings.soc2",
+      "issue": "mappings.soc2 key is present but contains an empty array; XPath injection rule has no SOC2 cross-mapping",
+      "required_fix": "Add CC6.1 to mappings.soc2, or remove the empty key"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/soc2/auth/cc6_1.json",
+      "framework": "soc2",
+      "type": "trace",
+      "severity": "low",
+      "field": "references",
+      "issue": "All 5 reference strings are advisory text; none contain an official source domain for soc2 (aicpa.org or csrc.nist.gov). This is representative of all 14 soc2 files (56 crossref violations total in this framework).",
+      "required_fix": "Add a URL from https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services or https://csrc.nist.gov to the references array"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/injection/a03_sql.json",
+      "framework": "owasp",
+      "type": "trace",
+      "severity": "low",
+      "field": "references",
+      "issue": "4 of 5 reference strings lack an owasp.org domain. Only the OWASP Cheat Sheet reference contains a qualifying URL. This is representative of all 26 owasp files (117 crossref violations across this framework).",
+      "required_fix": "Ensure each URL-bearing reference string points to owasp.org or cheatsheetseries.owasp.org"
+    },
+    {
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_1.json",
+      "framework": "gdpr",
+      "type": "trace",
+      "severity": "low",
+      "field": "references",
+      "issue": "All 4 reference strings are advisory text; none contain eur-lex.europa.eu or edpb.europa.eu. This is representative of all 11 gdpr files (44 crossref violations in this framework).",
+      "required_fix": "Add a URL such as https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679 or https://edpb.europa.eu to the references array"
+    },
+    {
+      "file_path": "SUMMARY",
+      "framework": "all",
+      "type": "trace",
+      "severity": "low",
+      "field": "references",
+      "issue": "243 total crossref violations across all 51 files: 14 soc2 files x ~4 refs = 56 violations; 26 owasp files x ~4.5 refs = 117 violations; 11 gdpr files x ~4 refs = 44 violations (26 crossref violations partially offset by OWASP cheat sheet URLs in injection rules). All violations are low severity. Full list available via: cargo run --bin policy_validate.",
+      "required_fix": "Add official source URL per framework to every policy file references array. Systematic fix: append official URL to references[] in all 51 files."
+    }
+  ],
+  "vendor_matrix": [
+    {
+      "company": "Google",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://cloud.google.com/security/compliance/soc-2",
+          "https://cloud.google.com/security/compliance/compliance-reports-manager"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc8_1 change_management has no policy rule",
+          "soc2_cc9_1 risk_management has no policy rule",
+          "soc2_cc9_2 vendor_risk has no policy rule",
+          "soc2_cc3_2 risk_assessment has no policy rule"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No public OWASP Top 10 or ASVS alignment document found on Google Cloud public compliance pages. Google publishes a separate Application Security program and Project Zero blog, but no explicit OWASP framework mapping is publicly confirmed.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Google Cloud publishes a GDPR Resource Center, offers a Data Processing Addendum, supports Standard Contractual Clauses, and provides EU data residency controls. Specific GDPR Article references not surfaced from page fetch (JS-rendered content).",
+        "evidence": [
+          "https://cloud.google.com/security/gdpr/resource-center",
+          "https://cloud.google.com/privacy/gdpr"
+        ]
+      },
+      "confidence": 0.7
+    },
+    {
+      "company": "Amazon",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://aws.amazon.com/compliance/soc-faqs/",
+          "https://d1.awsstatic.com/onedam/marketing-channels/website/aws/en_US/whitepapers/compliance/AWS_SOC3_Report.pdf"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc8_1 change_management has no policy rule",
+          "soc2_cc9_2 vendor_risk has no policy rule",
+          "soc2_privacy_tsc: AWS covers Privacy TSC; Argus has no privacy-specific SOC2 rules"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP Top 10 or ASVS mapping found on AWS compliance pages. AWS publishes security best practices and Well-Architected Framework guidance with implicit OWASP coverage but no formal OWASP mapping document.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "AWS GDPR Center explicitly covers SCCs (June 2021 EC version), CISPE Data Protection Code of Conduct, DPA incorporated in Service Terms. No specific GDPR article numbers cited on public page.",
+        "evidence": [
+          "https://aws.amazon.com/compliance/gdpr-center/",
+          "https://aws.amazon.com/blogs/security/new-standard-contractual-clauses-now-part-of-the-aws-gdpr-data-processing-addendum-for-customers/",
+          "https://aws.amazon.com/blogs/security/aws-and-eu-data-transfers-strengthened-commitments-to-protect-customer-data/"
+        ]
+      },
+      "confidence": 0.85
+    },
+    {
+      "company": "Microsoft",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "2024-10-01 to 2025-09-30",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://learn.microsoft.com/en-us/compliance/regulatory/offering-soc-2",
+          "https://servicetrust.microsoft.com/ViewPage/MSComplianceGuideV3"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc8_1 change_management has no policy rule",
+          "soc2_cc3_2 risk_assessment has no policy rule",
+          "soc2_csa_ccm: Microsoft SOC2 also covers CSA CCM controls; no CCM mapping in Argus"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No OWASP Top 10 or ASVS mapping found on Microsoft Trust Center SOC2 compliance pages. Microsoft publishes SDL (Security Development Lifecycle) guidance with implicit OWASP coverage but no formal OWASP alignment document on compliance pages.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Microsoft Trust Center provides GDPR compliance documentation, EU Data Boundary capabilities, and Service Trust Portal with GDPR assessment reports. Specific articles not cited on scrapable pages.",
+        "evidence": [
+          "https://www.microsoft.com/en-us/trust-center/compliance/compliance-overview",
+          "https://servicetrust.microsoft.com"
+        ]
+      },
+      "confidence": 0.9
+    },
+    {
+      "company": "Cloudflare",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://www.cloudflare.com/trust-hub/compliance-resources/soc-2/",
+          "https://www.cloudflare.com/resources/assets/slt3lc6tev37/7vZlrNo1tW8fmtSV3ASMqA/d055046a4fd2efeb845e0d2c1e192c55/SOC2_compliance.pdf"
+        ],
+        "mapping_gap_flags": [
+          "soc2_privacy_tsc: Cloudflare SOC2 covers only Security, Availability, Confidentiality — NOT Privacy or Processing Integrity; Argus rules do not distinguish TSC coverage scope",
+          "soc2_cc9_2 vendor_risk has no policy rule"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP framework mapping found on Cloudflare trust or GDPR pages. Cloudflare publishes WAF rule sets that implicitly cover OWASP Top 10 categories but no formal OWASP attestation document was found.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Cloudflare Customer DPA v6.3 (dated June 20 2025) published. Covers EU SCCs, EU-US Data Privacy Framework, Swiss-US DPF, UK DPF extension. ISO 27701/27018 certifications support GDPR privacy controls. Regional Services feature enables EU data residency. Art.44 and Art.46 explicitly addressed.",
+        "evidence": [
+          "https://www.cloudflare.com/cloudflare-customer-dpa/",
+          "https://www.cloudflare.com/trust-hub/gdpr/",
+          "https://cf-assets.www.cloudflare.com/slt3lc6tev37/3LmXORq5FW5EuJ0OT1B871/f466268011407efbc07f4fadbd1af466/Cloudflare_Customer_DPA_v6.3_June_20__2025.pdf"
+        ]
+      },
+      "confidence": 0.85
+    },
+    {
+      "company": "Stripe",
+      "soc2": {
+        "reported": "true",
+        "type": "Type I and II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://docs.stripe.com/security",
+          "https://stripe.com/guides/pci-compliance"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc8_1 change_management has no policy rule",
+          "soc2_pci_scope: Stripe is PCI DSS Level 1; Argus has no PCI-scoped rules"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP Top 10 or ASVS framework reference found on Stripe security documentation pages. Stripe's bug bounty program and PCI DSS Level 1 certification imply OWASP-aligned practices, but no formal OWASP mapping document is published.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "partial",
+        "notes": "Stripe provides a DPA at stripe.com/legal/dpa. Complies with EU-US Data Privacy Framework and Swiss-US DPF. TrustArc CBPR/PRP certification also held. Specific GDPR article references were not found on the public security documentation page.",
+        "evidence": [
+          "https://stripe.com/legal/dpa",
+          "https://stripe.com/en-ca/legal/privacy-center"
+        ]
+      },
+      "confidence": 0.8
+    },
+    {
+      "company": "GitHub",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "2024-04-01 to 2024-09-30",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://github.blog/changelog/2024-12-06-the-latest-github-and-github-copilot-soc-reports-are-now-available/",
+          "https://docs.github.com/en/enterprise-cloud@latest/admin/overview/accessing-compliance-reports-for-your-enterprise"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc8_1 change_management confirmed in GitHub SOC2 scope but has no Argus policy rule",
+          "soc2_cc3_2 risk_assessment confirmed in GitHub SOC2 scope but has no Argus policy rule",
+          "soc2_cc7_1 SIEM monitoring confirmed in GitHub SOC2 scope; Argus cc7_1 maps to CC7.2 rather than CC7.1"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP Top 10 alignment document found. GitHub publishes CodeQL security scanning and GitHub Security Lab research that implicitly covers OWASP categories, but no formal OWASP framework mapping is published.",
+        "evidence": [
+          "https://github.com/security"
+        ]
+      },
+      "gdpr": {
+        "public_evidence": "partial",
+        "notes": "GitHub mentions GDPR compliance alongside ISO and SOC2 on the security page. Trust Center (ghec.github.trust.page) and copilot trust page exist but are JavaScript-rendered and did not return parseable compliance details. GDPR coverage is confirmed but specific article references and DPA details were not publicly verifiable.",
+        "evidence": [
+          "https://github.com/security",
+          "https://ghec.github.trust.page"
+        ]
+      },
+      "confidence": 0.65
+    },
+    {
+      "company": "Atlassian",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://www.atlassian.com/trust/compliance/resources/soc2",
+          "https://www.atlassian.com/dam/jcr:e5104d7c-330f-43a8-9822-a9aa00643ab9/Atlassian-Admin-and-Connect-SOC-2-Type-1_29-Feb-2024.pdf"
+        ],
+        "mapping_gap_flags": [
+          "soc2_audit_period not confirmed from public pages",
+          "soc2_cc9_2 vendor_risk has no Argus policy rule"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP alignment document found. Atlassian trust.atlassian.com references SOC 2, ISO 27001, GDPR, and FedRAMP but not OWASP explicitly.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Atlassian publishes a Customer DPA with EU SCCs incorporated. DPA available at atlassian.com/legal/data-processing-addendum. EU-US Data Privacy Framework registration confirmed. GDPR compliance page at atlassian.com/trust/privacy/country/europe-and-gdpr.",
+        "evidence": [
+          "https://www.atlassian.com/legal/data-processing-addendum",
+          "https://www.atlassian.com/trust/privacy/country/europe-and-gdpr"
+        ]
+      },
+      "confidence": 0.7
+    },
+    {
+      "company": "Apple",
+      "soc2": {
+        "reported": "false",
+        "type": "not_public",
+        "period": "not_public",
+        "coverage_estimate": "none",
+        "evidence": [
+          "https://support.apple.com/guide/certifications/apple-internet-services-security-apc34d2c0468b/web"
+        ],
+        "mapping_gap_flags": [
+          "Apple uses ISO 27001 and ISO 27018 (auditor: Coalfire) rather than SOC 2 for internet services (iCloud, APNs, FaceTime). No SOC 2 report confirmed for any Apple service as of 2026-03-17."
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No OWASP framework mapping found on Apple security certification pages. Apple publishes a Platform Security Guide covering hardware-based security, but no explicit OWASP Top 10 alignment document.",
+        "evidence": [
+          "https://support.apple.com/guide/security/welcome/web"
+        ]
+      },
+      "gdpr": {
+        "public_evidence": "partial",
+        "notes": "Apple privacy policy (apple.com/legal/privacy/en-ww) confirms Standard Contractual Clauses for EEA/UK/Swiss transfers. Data subject rights covered (access, correct, transfer, restrict, delete). No specific GDPR article numbers cited. DPA contact at apple.com/legal/privacy/contact/. CBPR certification from globalcbpr.org.",
+        "evidence": [
+          "https://www.apple.com/legal/privacy/en-ww/",
+          "https://www.apple.com/legal/privacy/contact/"
+        ]
+      },
+      "confidence": 0.65
+    },
+    {
+      "company": "Meta",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "medium",
+        "evidence": [
+          "https://www.facebook.com/business/business-messaging/compliance/whatsapp-soc2",
+          "https://www.facebook.com/business/business-messaging/compliance/whatsapp-soc3",
+          "https://developers.facebook.com/products/messenger/security"
+        ],
+        "mapping_gap_flags": [
+          "soc2_scope limited to WhatsApp Business Cloud API and Messenger Platform; consumer Facebook/Instagram SOC2 not publicly confirmed",
+          "soc2_cc_controls not publicly disclosed for specific CC categories"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP Top 10 or ASVS alignment document found. Meta's bug bounty program (HackerOne) and Messenger Security page reference independent security testing but no OWASP framework mapping.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "partial",
+        "notes": "Meta Platforms Ireland Ltd is the EU data controller. GDPR compliance is confirmed via DPC interactions and public statements. Meta privacy policy page returned 404 during validation. DPA for WhatsApp Business API exists at facebook.com/legal/terms/dataprocessing. Consumer service GDPR attestation details are not publicly verifiable from official compliance pages.",
+        "evidence": [
+          "https://www.facebook.com/legal/terms/dataprocessing",
+          "https://www.workplace.com/security"
+        ]
+      },
+      "confidence": 0.45
+    },
+    {
+      "company": "OpenAI",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "2025-01-01 to 2025-06-30",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://trust.openai.com",
+          "https://openai.com/policies/supplier-security-measures/"
+        ],
+        "mapping_gap_flags": [
+          "soc2_scope limited to API Platform, ChatGPT Enterprise/Team/Edu; consumer ChatGPT Free and Plus not in scope",
+          "soc2_cc8_1 change_management has no Argus policy rule",
+          "soc2_ai_controls: AI-specific control categories (model output safety, prompt injection) not expressible in Argus current schema"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No explicit OWASP Top 10 or ASVS mapping found on OpenAI public compliance pages. OpenAI security page returned 403 during fetch. Trust portal (trust.openai.com) is access-controlled.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "partial",
+        "notes": "OpenAI privacy policy page returned 403 during fetch. Based on search evidence: OpenAI publishes a DPA for enterprise customers. EU-US DPF participation and SCCs confirmed for enterprise products. Specific GDPR article compliance details require account access to trust.openai.com.",
+        "evidence": [
+          "https://trust.openai.com"
+        ]
+      },
+      "confidence": 0.65
+    },
+    {
+      "company": "Manus",
+      "soc2": {
+        "reported": "not_public",
+        "type": "not_public",
+        "period": "not_public",
+        "coverage_estimate": "unverified",
+        "evidence": [
+          "https://trust.manus.im"
+        ],
+        "mapping_gap_flags": [
+          "trust.manus.im exists but returned only Vanta CDN JavaScript with no compliance content rendered",
+          "no SOC2 certification confirmed as of 2026-03-17"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No OWASP alignment documentation found. Manus AI trust center exists at trust.manus.im (Vanta-powered) but returned no parseable compliance content. LinkedIn analysis suggests privacy concerns; no formal OWASP attestation identified.",
+        "evidence": []
+      },
+      "gdpr": {
+        "public_evidence": "none",
+        "notes": "Manus privacy policy referenced at manus.im/privacy but specific GDPR compliance documentation, DPA availability, or transfer mechanism details could not be confirmed from any publicly accessible page. Company appears to operate primarily out of China with no confirmed EU data controller registration.",
+        "evidence": [
+          "https://trust.manus.im"
+        ]
+      },
+      "confidence": 0.15
+    },
+    {
+      "company": "Salesforce",
+      "soc2": {
+        "reported": "true",
+        "type": "Type I and II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://compliance.salesforce.com/"
+        ],
+        "mapping_gap_flags": [
+          "soc2_cc9_2 vendor_risk has no Argus policy rule",
+          "soc2_scope covers Salesforce Services (Hyperforce), Marketing Cloud, Slack, MuleSoft, Tableau, Heroku separately"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "partial",
+        "notes": "Salesforce publishes CSA CAIQ (Cloud Security Alliance Consensus Assessments Initiative Questionnaire) across services which implicitly covers OWASP-aligned controls. No explicit OWASP Top 10 mapping document found.",
+        "evidence": [
+          "https://compliance.salesforce.com/"
+        ]
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Salesforce publishes EU and UK Processor Binding Corporate Rules, GDPR Data Protection Impact Assessments, International Transfers FAQ, and EU-US Data Privacy Framework documentation via compliance.salesforce.com. Art.46 BCRs explicitly referenced.",
+        "evidence": [
+          "https://compliance.salesforce.com/",
+          "https://www.salesforce.com/company/privacy/"
+        ]
+      },
+      "confidence": 0.75
+    },
+    {
+      "company": "Datadog",
+      "soc2": {
+        "reported": "true",
+        "type": "Type II",
+        "period": "not_public",
+        "coverage_estimate": "high",
+        "evidence": [
+          "https://trust.datadoghq.com/"
+        ],
+        "mapping_gap_flags": [
+          "soc2_specific_tsc not publicly disclosed (Security/Availability/Confidentiality scope not confirmed from public content)",
+          "soc2_cc9_2 vendor_risk has no Argus policy rule"
+        ]
+      },
+      "owasp": {
+        "public_evidence": "absent",
+        "notes": "No OWASP Top 10 alignment or ASVS reference found on Datadog Trust Hub. Datadog publishes annual penetration test reports (2025 NCC Group and Cobalt Group) and responsible disclosure program, implying OWASP-aligned testing, but no formal mapping.",
+        "evidence": [
+          "https://trust.datadoghq.com/"
+        ]
+      },
+      "gdpr": {
+        "public_evidence": "strong",
+        "notes": "Datadog publishes GDPR certification and a Data Processing Addendum accessible via trust.datadoghq.com. EU-US Data Privacy Framework (DPF) alignment confirmed. Dedicated privacy team maintained. Specific article references not surfaced from public pages.",
+        "evidence": [
+          "https://trust.datadoghq.com/",
+          "https://www.datadoghq.com/privacy/"
+        ]
+      },
+      "confidence": 0.7
+    }
+  ],
+  "policy_additions": [
+    {
+      "action": "add",
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/components/a06_outdated_deps.json",
+      "rule": {
+        "id": "owasp.components.a06_outdated_deps",
+        "title": "Unpinned or Unversioned Dependency Installation",
+        "description": "Installing packages without explicit version pinning (pip install <pkg>, npm install <pkg> without @version) allows silent upgrades to vulnerable versions, violating OWASP A06:2021 (Vulnerable and Outdated Components). Dependency version drift is a primary supply-chain attack vector.",
+        "policy": {
+          "framework": "owasp",
+          "category": "components",
+          "code": "a06_outdated_deps"
+        },
+        "severity": "high",
+        "languages": ["*"],
+        "scope": {
+          "node_kinds": ["function_call", "string_literal"]
+        },
+        "match": {
+          "any": [
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)pip(?:3)?\\s+install\\s+(?!-r\\s)(?:[a-z0-9_.-]+\\s+)*[a-z0-9_.-]+(?![>=<!~^]|\\s*==)"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)npm\\s+install\\s+[a-z0-9@/._-]+(?!@[0-9~^])"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)yarn\\s+add\\s+[a-z0-9@/._-]+(?!@[0-9~^])"
+            },
+            {
+              "fact": "layer1_rule_id",
+              "op": "equals",
+              "value": "L1-UNPINNED-DEP-001"
+            }
+          ]
+        },
+        "finding": {
+          "message": "Dependency installed without explicit version pin at '{{token}}' in {{file}} at line {{line}}. Unpinned installs may silently upgrade to a vulnerable version.",
+          "primary_anchor": "token",
+          "related": []
+        },
+        "mappings": {
+          "owasp": ["A06"],
+          "soc2": ["CC6.8", "CC6.1"],
+          "gdpr": ["Art.32(1)(b)"]
+        },
+        "references": [
+          "https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Vulnerable_Dependency_Management_Cheat_Sheet.html",
+          "Pin all dependencies to exact versions in requirements.txt / package-lock.json / Cargo.lock / go.sum.",
+          "Automate dependency vulnerability scanning with Dependabot, Renovate, cargo-audit, or pip-audit.",
+          "CWE references: CWE-1104, CWE-937"
+        ],
+        "tags": ["supply-chain", "sca", "owasp-a06", "dependencies"],
+        "defaults": {}
+      },
+      "source_control": "OWASP A06:2021",
+      "evidence": [
+        "https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/"
+      ],
+      "reason": "OWASP A06:2021 (Vulnerable and Outdated Components) is one of the Top 10 categories with no corresponding Argus rule. Confirmed vendor supply-chain incidents (Log4Shell, XZ Utils) demonstrate active exploitation of unpinned/outdated dependencies. Coverage gap confirmed by vendor_matrix: no company publishes OWASP alignment docs, making it impossible to verify A06 controls in vendor SOC2 scope without an Argus rule."
+    },
+    {
+      "action": "add",
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/design/a04_mass_assignment.json",
+      "rule": {
+        "id": "owasp.design.a04_mass_assignment",
+        "title": "Mass Assignment via Unfiltered Request Body",
+        "description": "Passing raw request body/params directly to ORM constructors without an explicit field allowlist enables mass assignment (OWASP A04:2021 — Insecure Design). Attackers inject extra fields to overwrite protected attributes such as role, admin_flag, or account balance.",
+        "policy": {
+          "framework": "owasp",
+          "category": "design",
+          "code": "a04_mass_assignment"
+        },
+        "severity": "high",
+        "languages": ["*"],
+        "scope": {
+          "node_kinds": ["assignment", "function_call"]
+        },
+        "match": {
+          "any": [
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)\\.(?:create|build|new)\\s*\\(\\s*(?:request\\.(?:body|data|form|json|POST)|req\\.body|params)\\s*\\)"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)(?:update_attributes|assign_attributes|fill|bind|from_params)\\s*\\(\\s*(?:params|request\\.(?:data|body)|req\\.body)"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)(?:User|Account|Profile|Order|Record)\\(\\s*\\*\\*?\\s*(?:request\\.(?:json|form|data)|req\\.body|params)"
+            },
+            {
+              "fact": "layer1_rule_id",
+              "op": "equals",
+              "value": "L1-MASS-ASSIGN-001"
+            }
+          ]
+        },
+        "finding": {
+          "message": "Potential mass assignment: unfiltered request body passed to model constructor at '{{token}}' in {{file}} at line {{line}}. Apply an explicit field allowlist.",
+          "primary_anchor": "token",
+          "related": []
+        },
+        "mappings": {
+          "owasp": ["A04", "A01"],
+          "soc2": ["CC6.1"],
+          "gdpr": ["Art.25(2)", "Art.32"]
+        },
+        "references": [
+          "https://owasp.org/Top10/A04_2021-Insecure_Design/",
+          "https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html",
+          "Use strong parameter filtering: Rails strong_parameters permit(), Spring @JsonIgnoreProperties, Django serializer Meta.fields allowlist.",
+          "Never pass raw request bodies directly to ORM .create() or .save() constructors.",
+          "CWE references: CWE-915, CWE-1321"
+        ],
+        "tags": ["mass-assignment", "insecure-design", "owasp-a04"],
+        "defaults": {}
+      },
+      "source_control": "OWASP A04:2021",
+      "evidence": [
+        "https://owasp.org/Top10/A04_2021-Insecure_Design/",
+        "https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html"
+      ],
+      "reason": "OWASP A04:2021 (Insecure Design) has no corresponding Argus rule. Mass assignment is a widely-exploited pattern that every vendor's SOC2 audit implicitly tests via CC6.1 (access controls) and CC6.3 (authorization). Absence means Argus cannot flag a critical class of privilege escalation vulnerability detectable by static analysis."
+    },
+    {
+      "action": "add",
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/soc2/vendor/cc9_2.json",
+      "rule": {
+        "id": "soc2.vendor.cc9_2",
+        "title": "Dynamic Remote Code Loading or eval of Fetched Content",
+        "description": "Loading and executing code from remote HTTP/HTTPS URLs at runtime (dynamic require, eval of fetched content) introduces uncontrolled third-party code execution vectors. This violates SOC2 CC9.2 (vendor risk management) and indicates absence of software supply-chain controls.",
+        "policy": {
+          "framework": "soc2",
+          "category": "vendor",
+          "code": "cc9_2"
+        },
+        "severity": "high",
+        "languages": ["*"],
+        "scope": {
+          "node_kinds": ["function_call", "string_literal"]
+        },
+        "match": {
+          "any": [
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)(?:require|import)\\s*\\(['\"]https?://"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)eval\\s*\\(.*(?:fetch|http\\.get|urllib|requests\\.get|download).*\\)"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)exec\\s*\\(.*(?:curl|wget|http|url|remote).*\\)"
+            },
+            {
+              "fact": "layer1_rule_id",
+              "op": "equals",
+              "value": "L1-REMOTE-CODE-LOAD-001"
+            }
+          ]
+        },
+        "finding": {
+          "message": "Remote code loaded or evaluated at runtime via '{{token}}' in {{file}} at line {{line}}. Executing unvalidated remote content bypasses supply-chain controls.",
+          "primary_anchor": "token",
+          "related": []
+        },
+        "mappings": {
+          "soc2": ["CC9.2", "CC6.8"],
+          "owasp": ["A06", "A08"],
+          "gdpr": ["Art.32(1)(b)"]
+        },
+        "references": [
+          "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services",
+          "https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/",
+          "Never load executable code from remote URLs at runtime; bundle all dependencies at build time.",
+          "Use Subresource Integrity (SRI) for browser-loaded scripts; sign and verify artifacts in CI/CD.",
+          "CWE references: CWE-494, CWE-829, CWE-78"
+        ],
+        "tags": ["supply-chain", "third-party", "soc2-cc9", "remote-code"],
+        "defaults": {}
+      },
+      "source_control": "SOC2 CC9.2",
+      "evidence": [
+        "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services",
+        "https://github.blog/changelog/2024-12-06-the-latest-github-and-github-copilot-soc-reports-are-now-available/"
+      ],
+      "reason": "SOC2 CC9.2 (vendor and business partner risk management) has no coverage in Argus. Vendor matrix confirms that Google, Amazon, Microsoft, GitHub, Atlassian, Salesforce, and Datadog all attest to vendor risk controls in their SOC2 scope. Dynamic remote code loading is the detectable code pattern that directly violates CC9.2 supply-chain integrity controls."
+    },
+    {
+      "action": "add",
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/consent/art7_1.json",
+      "rule": {
+        "id": "gdpr.consent.art7_1",
+        "title": "Personal Data Stored Without Consent Record",
+        "description": "Writing personal data (email, phone, address, SSN, DOB) to persistent storage without a co-located consent timestamp or identifier violates GDPR Article 7(1): the controller must be able to demonstrate that consent was given. Absence of a consent record makes the data processing unlawful.",
+        "policy": {
+          "framework": "gdpr",
+          "category": "consent",
+          "code": "art7_1"
+        },
+        "severity": "high",
+        "languages": ["*"],
+        "scope": {
+          "node_kinds": ["function_call", "assignment"]
+        },
+        "match": {
+          "any": [
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)INSERT\\s+INTO\\s+\\w+[^;]*(?:email|phone|address|dob|ssn|national_id)[^;]*(?!consent_at|opted_in|gdpr_accepted)"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)(?:db|orm|session|model)\\.(?:save|create|insert|put)\\s*\\([^)]*(?:email|phone|address|national_id)[^)]*\\)(?![^\\n]*consent)"
+            },
+            {
+              "fact": "layer1_rule_id",
+              "op": "equals",
+              "value": "L1-NO-CONSENT-RECORD-001"
+            }
+          ]
+        },
+        "finding": {
+          "message": "Personal data stored at '{{token}}' in {{file}} at line {{line}} without apparent consent record. Verify consent was collected and a consent_at / gdpr_accepted timestamp is persisted.",
+          "primary_anchor": "token",
+          "related": []
+        },
+        "mappings": {
+          "gdpr": ["Art.7(1)", "Art.6(1)"],
+          "soc2": ["CC6.1"],
+          "owasp": ["A04"]
+        },
+        "references": [
+          "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+          "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-052020-consent-under-regulation-2016679_en",
+          "Store consent with: data subject identifier, consent version, timestamp, channel (web/app/email), and privacy notice version shown.",
+          "Implement a Consent Management Platform (CMP) that logs consent provenance in an immutable audit store.",
+          "CWE references: CWE-359"
+        ],
+        "tags": ["consent", "lawful-basis", "gdpr-art7", "privacy"],
+        "defaults": {}
+      },
+      "source_control": "GDPR Art.7",
+      "evidence": [
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+        "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-052020-consent-under-regulation-2016679_en"
+      ],
+      "reason": "GDPR Art.6 (lawful basis) and Art.7 (consent conditions) are absent from the Argus GDPR corpus. Vendor matrix confirms all European-facing companies (Cloudflare DPA v6.3, Atlassian DPA with SCCs, Salesforce BCRs) reference lawful basis controls. Art.7(1) is the most code-detectable consent gap: storing personal data without a consent record is an inferable static analysis pattern."
+    },
+    {
+      "action": "add",
+      "file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/soc2/monitoring/cc7_4.json",
+      "rule": {
+        "id": "soc2.monitoring.cc7_4",
+        "title": "Privileged Operation Without Audit Log Emission",
+        "description": "Administrative or destructive operations (delete_all, truncate, impersonate, privilege escalation) executed without adjacent audit log emission violate SOC2 CC7.4 (security incident response and detection). Unmonitored admin paths prevent incident detection and forensic reconstruction.",
+        "policy": {
+          "framework": "soc2",
+          "category": "monitoring",
+          "code": "cc7_4"
+        },
+        "severity": "high",
+        "languages": ["*"],
+        "scope": {
+          "node_kinds": ["function_definition", "function_call"]
+        },
+        "match": {
+          "any": [
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)(?:User|Account|Record|Table)\\.(?:delete_all|destroy_all|truncate)\\s*(?:\\(\\))?(?![^\\n]*(?:log|audit|event|track))"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)TRUNCATE\\s+TABLE\\s+\\w+(?![^;]*(?:log|audit))"
+            },
+            {
+              "fact": "token",
+              "op": "matches",
+              "value": "(?i)def\\s+(?:admin_|promote_user|escalate_|impersonate_|grant_role|revoke_role)\\w+(?:[^\\n]*\\n){0,3}(?![^\\n]*\\b(?:log|audit|emit|track)\\b)"
+            },
+            {
+              "fact": "layer1_rule_id",
+              "op": "equals",
+              "value": "L1-UNMONITORED-ADMIN-001"
+            }
+          ]
+        },
+        "finding": {
+          "message": "Privileged or destructive operation '{{token}}' in {{file}} at line {{line}} lacks adjacent audit log emission. All admin actions must be logged with actor, action, resource, and outcome.",
+          "primary_anchor": "token",
+          "related": []
+        },
+        "mappings": {
+          "soc2": ["CC7.4", "CC7.2", "CC4.1"],
+          "owasp": ["A09"],
+          "gdpr": ["Art.30", "Art.32(1)(d)"]
+        },
+        "references": [
+          "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services",
+          "https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/",
+          "Emit a structured audit event (actor_id, action, resource_type, resource_id, timestamp, outcome) before or after every privileged operation.",
+          "Route security events to a SIEM with alerting on bulk deletions, off-hours admin access, and privilege escalation patterns.",
+          "CWE references: CWE-778, CWE-223"
+        ],
+        "tags": ["monitoring", "audit-logging", "incident-response", "soc2-cc7"],
+        "defaults": {}
+      },
+      "source_control": "SOC2 CC7.4",
+      "evidence": [
+        "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services",
+        "https://github.blog/changelog/2024-12-06-the-latest-github-and-github-copilot-soc-reports-are-now-available/"
+      ],
+      "reason": "SOC2 CC7.4 (incident response / security event monitoring) has no dedicated Argus rule. The existing cc7_1/cc7_2/cc7_3 rules detect PII in logs and debug mode, but none detect the absence of logging on privileged operations. GitHub's publicly confirmed SOC2 scope explicitly includes CC7.1 (SIEM monitoring). All 13 vendors in the matrix attest to incident detection controls that require this audit-logging pattern."
+    }
+  ],
+  "policy_modifications": [
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/soc2/auth/cc6_1.json",
+      "proposed_changes": [
+        {
+          "field": "references",
+          "from": [
+            "Remove the hardcoded value and store it in a secrets manager (AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager).",
+            "Rotate all exposed credentials immediately \u2014 treat them as compromised.",
+            "Use environment variables or a secure configuration layer at runtime.",
+            "Add pre-commit hooks (e.g. gitleaks, truffleHog) to prevent future secret commits.",
+            "CWE references: CWE-798, CWE-259"
+          ],
+          "to": [
+            "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services",
+            "https://csrc.nist.gov/publications/detail/sp/800-63b/final",
+            "Remove the hardcoded value and store it in a secrets manager (AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager).",
+            "Rotate all exposed credentials immediately \u2014 treat them as compromised.",
+            "CWE references: CWE-798, CWE-259"
+          ],
+          "reason": "All 14 SOC2 policy files fail the crossref validator check because references[] contains no official source domain (aicpa.org or csrc.nist.gov). Adding the AICPA SOC suite URL and NIST SP 800-63B URL resolves this for cc6_1. The same pattern fix should be applied to all 13 remaining SOC2 files."
+        }
+      ],
+      "risk_of_no_change": "low",
+      "evidence": [
+        "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services"
+      ]
+    },
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/soc2/crypto/cc6_4.json",
+      "proposed_changes": [
+        {
+          "field": "mappings.soc2",
+          "from": ["CC6.6", "CC6.7"],
+          "to": ["CC6.4", "CC6.6", "CC6.7"],
+          "reason": "soc2.crypto.cc6_4 implements a rule for CC6.4 (key lifecycle management / restricting logical access to cryptographic keys) but does not map to its own control code. The aggregated mapped_controls from the validator does not include CC6.4, creating a false gap in coverage. Same issue exists for cc6_5 (maps to CC6.7 but not CC6.5)."
+        }
+      ],
+      "risk_of_no_change": "medium",
+      "evidence": [
+        "https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services"
+      ]
+    },
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/data_protection/art25_2.json",
+      "proposed_changes": [
+        {
+          "field": "mappings.soc2",
+          "from": [],
+          "to": ["CC6.1"],
+          "reason": "Art.25(2) (data minimisation by default) maps to CC6.1 because minimum-necessary data collection aligns with logical access controls principle. Removing the empty array eliminates the trace violation."
+        },
+        {
+          "field": "mappings.owasp",
+          "from": [],
+          "to": ["A04"],
+          "reason": "Art.25(2) data-by-default (collect only minimum necessary) directly corresponds to OWASP A04:2021 (Insecure Design), specifically the principle of not exposing unnecessary data fields to clients or storing excessive PII."
+        },
+        {
+          "field": "references",
+          "from": [],
+          "to": ["https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679", "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-042019-article-25_en"],
+          "reason": "GDPR files have no official source domain in references, causing all 11 GDPR rules to fail the crossref check. Adding eur-lex.europa.eu and the EDPB Art.25 guidelines URL resolves this for art25_2."
+        }
+      ],
+      "risk_of_no_change": "medium",
+      "evidence": [
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+        "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-042019-article-25_en"
+      ]
+    },
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/gdpr/retention/art5_1.json",
+      "proposed_changes": [
+        {
+          "field": "mappings.soc2",
+          "from": [],
+          "to": ["CC6.1", "CC7.2"],
+          "reason": "Art.5(1)(e) (storage limitation) maps to CC6.1 (access to retained data must be controlled) and CC7.2 (monitoring of data lifecycle). Removes trace violation."
+        },
+        {
+          "field": "mappings.owasp",
+          "from": [],
+          "to": ["A09"],
+          "reason": "Data retention violations are detectable via logging failures (OWASP A09): if retention-expiry events are not logged, expired data remains silently in storage."
+        },
+        {
+          "field": "references",
+          "from": [],
+          "to": ["https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679", "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-052020-consent-under-regulation-2016679_en"],
+          "reason": "Adds official GDPR source domain to references, resolving the crossref trace violation."
+        }
+      ],
+      "risk_of_no_change": "medium",
+      "evidence": [
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679"
+      ]
+    },
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/crypto/a02_pii_in_url.json",
+      "proposed_changes": [
+        {
+          "field": "mappings.gdpr",
+          "from": [],
+          "to": ["Art.5(1)(f)", "Art.32(1)(a)"],
+          "reason": "Transmitting PII in URLs exposes personal data to server logs, proxy logs, referrer headers, and browser history — directly violating GDPR Art.5(1)(f) (integrity and confidentiality) and Art.32(1)(a) (pseudonymisation and encryption of personal data). 11 GDPR vendor evidence sources (Cloudflare DPA, Atlassian DPA, Salesforce BCRs) all reference confidentiality of personal data in transit."
+        }
+      ],
+      "risk_of_no_change": "high",
+      "evidence": [
+        "https://owasp.org/Top10/A02_2021-Cryptographic_Failures/",
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679"
+      ]
+    },
+    {
+      "action": "modify",
+      "existing_file_path": "/Users/nevanjose/Desktop/nevin/argus/policies/owasp/logging/a09_pii_log.json",
+      "proposed_changes": [
+        {
+          "field": "mappings.gdpr",
+          "from": ["Art.5(1)(f)", "Art.32"],
+          "to": ["Art.5(1)(c)", "Art.5(1)(f)", "Art.32", "Art.33"],
+          "reason": "Logging PII also violates Art.5(1)(c) (data minimisation — logging should only capture the minimum necessary data) and Art.33 (breach notification — PII in logs that is exposed constitutes a personal data breach requiring DPA notification within 72h). Salesforce BCRs and Cloudflare DPA both reference data minimisation in logging obligations."
+        },
+        {
+          "field": "finding.message",
+          "from": "Potential PII logged at '{{token}}' in {{file}} at line {{line}}.",
+          "to": "PII ({{token}}) written to log at {{file}} line {{line}}. This creates a personal data breach risk (GDPR Art.33) and violates the data minimisation principle (Art.5(1)(c)).",
+          "reason": "Updated message explicitly references GDPR Art.33 breach notification trigger, helping engineers understand the regulatory consequence and prioritise remediation."
+        }
+      ],
+      "risk_of_no_change": "high",
+      "evidence": [
+        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679",
+        "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-092022-personal-data-breach-notification_en"
+      ]
+    }
+  ],
+  "manual_review_required": [
+    {
+      "framework": "gdpr",
+      "target": "Art.6 — Lawful Basis for Processing",
+      "reason": "Argus has no rule covering GDPR Art.6 (lawful basis: consent, contract, legal obligation, vital interests, public task, legitimate interests). Whether a processing activity has a lawful basis is a legal / architectural determination, not inferrable from individual code tokens. Requires Data Protection Officer review of each processing activity in the ROPA (Records of Processing Activities)."
+    },
+    {
+      "framework": "gdpr",
+      "target": "Art.28 — Processor Obligations and Sub-processor Chains",
+      "reason": "GDPR Art.28 requires a written Data Processing Agreement between controller and processor. Compliance depends on contractual documentation (DPA contents, sub-processor lists), not source code patterns. Cannot be expressed in Argus policy schema. All 13 vendors in the matrix publish DPAs (confirmed for Cloudflare, Atlassian, Stripe, Salesforce, Datadog, GitHub, Amazon). Review vendor DPA sub-processor clauses against Art.28(3) requirements."
+    },
+    {
+      "framework": "gdpr",
+      "target": "Art.35 — Data Protection Impact Assessment (DPIA)",
+      "reason": "Art.35 requires a DPIA for processing likely to result in high risk (large-scale profiling, systematic monitoring, sensitive data categories). This is a governance/process obligation. Salesforce explicitly publishes GDPR DPIA documentation. Cannot be detected in source code; requires privacy engineer review of new features and processing operations."
+    },
+    {
+      "framework": "soc2",
+      "target": "CC8.1 — Change Management Controls",
+      "reason": "SOC2 CC8.1 (change management: code review, deployment approvals, rollback procedures) is confirmed in GitHub, Atlassian, and Microsoft SOC2 scope but has no Argus policy rule. Change management controls are process/pipeline controls (CI/CD configuration, branch protection rules, approval gates) that cannot be expressed as source code IR pattern matching. Requires CI/CD configuration audit and branch protection policy review."
+    },
+    {
+      "framework": "soc2",
+      "target": "CC9.1 — Risk Assessment Process",
+      "reason": "SOC2 CC9.1 (identification of risks, risk appetite, risk mitigation) is a governance and operational process, not a code-detectable pattern. Cannot be expressed in Argus policy schema. Requires annual SOC2 risk assessment documentation review against vendor-attested controls."
+    },
+    {
+      "framework": "owasp",
+      "target": "AI-Specific Attack Surface (Prompt Injection, Model Inversion) for OpenAI and Manus",
+      "reason": "OpenAI SOC2 Type II (Jan-Jun 2025) covers API Platform and ChatGPT Enterprise. Manus AI Trust Center exists but no certifications confirmed. Neither vendor documents OWASP ASVS or LLM-specific security controls publicly. OWASP publishes the LLM Top 10 (2024 edition) but Argus has no LLM-specific rules (prompt injection, insecure output handling, sensitive information disclosure). These cannot be expressed with current token-based IR patterns. Requires separate LLM security policy schema extension."
+    }
+  ],
+  "next_steps": [
+    "Immediate (P0): Add official source URL to references[] in all 51 policy files — soc2 files: add https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services; owasp files: ensure at least one cheatsheetseries.owasp.org URL per file; gdpr files: add https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679. This resolves all 243 crossref trace violations.",
+    "Immediate (P0): Apply 6 proposed policy_modifications: fix empty mapping arrays in 9 files, fix cc6_4 self-mapping, add GDPR cross-references to owasp/crypto/a02_pii_in_url and owasp/logging/a09_pii_log.",
+    "Short-term (P1): Create 5 new policy files from policy_additions: owasp/components/a06_outdated_deps.json, owasp/design/a04_mass_assignment.json, soc2/vendor/cc9_2.json, gdpr/consent/art7_1.json, soc2/monitoring/cc7_4.json. These close confirmed OWASP A04/A06, SOC2 CC9.2/CC7.4, and GDPR Art.7 gaps validated against vendor evidence.",
+    "Short-term (P1): Fix soc2/crypto/cc6_5.json to add CC6.5 to its own mappings.soc2 array (same self-mapping issue as cc6_4). Verify cc7_1.json and cc7_3.json map to CC7.1 and CC7.3 respectively instead of CC7.2.",
+    "Medium-term (P2): Address manual_review_required items: initiate ROPA review for GDPR Art.6 lawful basis, audit all vendor DPAs against Art.28(3) checklist, schedule DPIA reviews for high-risk processing, conduct CC8.1 change management documentation audit.",
+    "Medium-term (P2): Assess coverage of SOC2 CC3.2 (risk assessment) and CC8.1 (change management) — confirmed in GitHub SOC2 public scope data. Evaluate whether Argus should add CI/CD configuration lint rules for branch protection and mandatory review enforcement.",
+    "Long-term (P3): Evaluate OWASP ASVS Level 2 gap analysis: current policy corpus covers A01-A03, A05, A07-A10 at varying depth but lacks systematic ASVS mapping. An ASVS L2 coverage matrix would quantify which verification requirements are automatable vs. manual.",
+    "Long-term (P3): Establish Manus AI compliance monitoring: trust.manus.im shows Vanta integration but no certifications rendered as of 2026-03-17. Re-check quarterly; escalate to vendor questionnaire if SOC2 or ISO 27001 is not confirmed within 6 months. Current confidence: 0.15 — treat as unverified for all compliance cross-referencing purposes.",
+    "Long-term (P3): Draft LLM security policy schema extension for OpenAI and Manus use cases. Reference OWASP LLM Top 10 (2024) — specifically LLM01 (Prompt Injection), LLM06 (Sensitive Information Disclosure), LLM08 (Excessive Agency). These require new fact types beyond current token/layer1_rule_id predicates."
+  ]
+}

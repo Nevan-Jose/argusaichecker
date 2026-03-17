@@ -1,0 +1,62 @@
+{
+  "id": "owasp.access_control.a01_open_redirect",
+  "title": "Open Redirect",
+  "description": "Redirecting users to a URL supplied in request parameters without validation enables phishing attacks and can bypass authentication flows (OWASP A01:2021 / CWE-601).",
+  "policy": {
+    "framework": "owasp",
+    "category": "access_control",
+    "code": "a01_open_redirect"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "open-redirect",
+    "access-control",
+    "owasp-a01"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "return_statement"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(redirect|location\\.href|Response\\.redirect|HttpResponseRedirect|redirect_to).*(?:request|param|input|query|next|url|return_to)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(header\\(['\"]Location|res\\.redirect|response\\.sendRedirect|return redirect).*(?:request|get\\(|param|input)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-OPEN-REDIRECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential open redirect via '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A01"
+    ],
+    "soc2": []
+  },
+  "references": [
+    "Validate redirect URLs against an allowlist of permitted domains.",
+    "Use relative paths for same-site redirects; never trust the 'next' or 'return_to' parameter directly.",
+    "Consider using an indirect reference map (redirect ID \u2192 URL) for external redirects.",
+    "OWASP Unvalidated Redirects and Forwards Cheat Sheet.",
+    "CWE references: CWE-601"
+  ]
+}

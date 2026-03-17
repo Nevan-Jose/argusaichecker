@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.rights.art17_1",
+  "title": "Right to Erasure — Missing Delete Capability",
+  "description": "Data models or APIs that lack a deletion or anonymisation path for user data may prevent compliance with GDPR Article 17 (right to erasure / 'right to be forgotten').",
+  "policy": {
+    "framework": "gdpr",
+    "category": "rights",
+    "code": "art17_1"
+  },
+  "severity": "medium",
+  "languages": ["*"],
+  "tags": ["right-to-erasure", "deletion", "gdpr-art17"],
+  "scope": {
+    "node_kinds": ["function_definition", "class_definition", "struct_definition"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(class|struct|model)\\s+(?:User|Customer|Patient|Member|Person|Account)(?!.*delete|.*erase|.*anonymise|.*gdpr_delete)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(CREATE TABLE|CREATE_TABLE).*(?:users|customers|patients|members)(?!.*CASCADE|.*ON DELETE)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-NO-DELETE-001" }
+    ]
+  },
+  "finding": {
+    "message": "Data model at '{{token}}' in {{file}} at line {{line}} may lack an erasure mechanism.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.17", "Art.12", "Art.19"],
+    "soc2": [],
+    "owasp": []
+  },
+  "references": [
+    "Implement a gdpr_delete() or anonymise() method on all personal data models.",
+    "Use soft-deletes (deleted_at timestamp) with a scheduled hard-delete or anonymisation job.",
+    "Ensure cascading deletes or anonymisation in related tables when a user is erased.",
+    "GDPR Article 17(1) gives data subjects the right to erasure without undue delay."
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "id": "owasp.crypto.a02_weak_hash",
+  "title": "Weak Cryptographic Hash Function",
+  "description": "MD5 and SHA-1 are cryptographically broken and must not be used for integrity verification, digital signatures, or any security purpose (OWASP A02:2021 / CWE-327).",
+  "policy": {
+    "framework": "owasp",
+    "category": "crypto",
+    "code": "a02_weak_hash"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "weak-crypto",
+    "hash",
+    "owasp-a02"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(hashlib\\.md5|hashlib\\.sha1|MD5\\.new|SHA\\.new|hmac\\.new.*md5|hmac\\.new.*sha1)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(MessageDigest\\.getInstance\\(['\"](?:MD5|SHA-?1)['\"]|crypto\\.createHash\\(['\"](?:md5|sha1)['\"])"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Digest::MD5|Digest::SHA1|openssl_digest.*md5|openssl_digest.*sha1)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-WEAK-HASH-002"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak hash function '{{token}}' used in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A02"
+    ],
+    "soc2": [
+      "CC6.7"
+    ]
+  },
+  "references": [
+    "Use SHA-256, SHA-384, or SHA-512 for general-purpose hashing.",
+    "Use SHA-3 or BLAKE3 for new implementations requiring collision resistance.",
+    "MD5/SHA-1 are still acceptable for non-security purposes (checksums, deduplication) but never for security.",
+    "NIST formally deprecated SHA-1 for digital signatures (NIST SP 800-131A Rev 2, 2022).",
+    "CWE references: CWE-327, CWE-328"
+  ]
+}

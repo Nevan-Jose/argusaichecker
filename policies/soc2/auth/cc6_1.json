@@ -1,0 +1,75 @@
+{
+  "id": "soc2.auth.cc6_1",
+  "title": "Hardcoded Credentials",
+  "description": "Hardcoded passwords, API keys, or secrets embedded directly in source code violate SOC2 CC6.1 (logical access controls). These values are visible in version control and can be exploited to gain unauthorized access.",
+  "policy": {
+    "framework": "soc2",
+    "category": "auth",
+    "code": "cc6_1"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "secrets",
+    "credentials",
+    "soc2-cc6"
+  ],
+  "scope": {
+    "node_kinds": [
+      "string_literal",
+      "assignment"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(password|passwd|pwd|secret|api_key|apikey|access_key|auth_token|private_key)\\s*=\\s*['\"][^'\"]{6,}['\"]"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "AKIA[0-9A-Z]{16}"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)ghp_[0-9A-Za-z]{36}"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)sk-[A-Za-z0-9]{32,}"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SECRET-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Hardcoded credential '{{token}}' found in {{file}} at line {{line}}. Rotate this secret immediately.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC6.1",
+      "CC6.2"
+    ],
+    "owasp": [
+      "A07"
+    ]
+  },
+  "references": [
+    "Remove the hardcoded value and store it in a secrets manager (AWS Secrets Manager, HashiCorp Vault, GCP Secret Manager).",
+    "Rotate all exposed credentials immediately \u2014 treat them as compromised.",
+    "Use environment variables or a secure configuration layer at runtime.",
+    "Add pre-commit hooks (e.g. gitleaks, truffleHog) to prevent future secret commits.",
+    "CWE references: CWE-798, CWE-259"
+  ]
+}

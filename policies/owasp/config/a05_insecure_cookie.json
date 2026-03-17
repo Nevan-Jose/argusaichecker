@@ -1,0 +1,70 @@
+{
+  "id": "owasp.config.a05_insecure_cookie",
+  "title": "Insecure Cookie Attributes",
+  "description": "Session cookies missing Secure, HttpOnly, or SameSite attributes are vulnerable to theft via XSS, MITM, or CSRF attacks (OWASP A05:2021 / CWE-614).",
+  "policy": {
+    "framework": "owasp",
+    "category": "config",
+    "code": "a05_insecure_cookie"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "cookie",
+    "session",
+    "misconfiguration",
+    "owasp-a05"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "assignment"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(set_cookie|response\\.cookie|setCookie|Set-Cookie).*(?!.*[Ss]ecure)(?!.*[Hh]ttp[Oo]nly)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(httponly\\s*=\\s*False|secure\\s*=\\s*False|samesite\\s*=\\s*['\"]None['\"].*secure\\s*=\\s*False)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(SESSION_COOKIE_SECURE\\s*=\\s*False|SESSION_COOKIE_HTTPONLY\\s*=\\s*False)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-INSECURE-COOKIE-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Insecure cookie configuration '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A05"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Set Secure flag: cookie is only sent over HTTPS.",
+    "Set HttpOnly flag: cookie is not accessible via JavaScript (mitigates XSS theft).",
+    "Set SameSite=Strict or SameSite=Lax to prevent CSRF.",
+    "OWASP Session Management Cheat Sheet.",
+    "CWE references: CWE-614, CWE-1004, CWE-1275"
+  ]
+}

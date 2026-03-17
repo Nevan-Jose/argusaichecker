@@ -1,0 +1,39 @@
+{
+  "id": "gdpr.breach.art33_1",
+  "title": "Missing Breach Detection or Audit Logging",
+  "description": "Absence of audit logging for access to personal data makes it impossible to detect, assess, and notify of personal data breaches within GDPR Article 33's 72-hour requirement.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "breach",
+    "code": "art33_1"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["audit-logging", "breach-detection", "gdpr-art33"],
+  "scope": {
+    "node_kinds": ["function_definition", "function_call"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)(def\\s+(?:get_user|get_customer|fetch_patient|retrieve_personal|export_data)\\b)(?!.*log|.*audit|.*track)" },
+      { "fact": "token", "op": "matches", "value": "(?i)(SELECT.*FROM.*(?:users|customers|patients|members))(?!.*audit|.*log)" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-NO-AUDIT-LOG-001" }
+    ]
+  },
+  "finding": {
+    "message": "Personal data access without apparent audit logging at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.33", "Art.30", "Art.32(1)(d)"],
+    "soc2": ["CC7.2", "CC4.1"],
+    "owasp": ["A09"]
+  },
+  "references": [
+    "Log all access to personal data with: who accessed it, when, from where, and what data was accessed.",
+    "Store audit logs in a write-once, tamper-evident store separate from application logs.",
+    "Implement automated alerts for abnormal access patterns (bulk exports, off-hours access).",
+    "GDPR Article 33 requires notification to supervisory authority within 72 hours of becoming aware of a breach."
+  ]
+}

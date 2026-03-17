@@ -1,0 +1,65 @@
+{
+  "id": "soc2.logging.cc7_1",
+  "title": "Secrets Logged to Console or Log File",
+  "description": "Logging passwords, tokens, or API keys to application logs violates SOC2 CC7.2 (monitoring) and CC6.1 (access controls). Log aggregators often store data in plaintext and are accessible to operations teams.",
+  "policy": {
+    "framework": "soc2",
+    "category": "logging",
+    "code": "cc7_1"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "logging",
+    "secrets",
+    "pii",
+    "soc2-cc7"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(log|print|console\\.log|println!|fmt\\.Print|logger\\.).*(?:password|passwd|secret|api_key|token|credential)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(logging\\.(info|debug|warning|error|critical)|log\\.(info|debug|warn|error)).*(?:password|secret|token|key)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-SECRET-LOG-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Potential secret logged at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "soc2": [
+      "CC7.2",
+      "CC6.1"
+    ],
+    "owasp": [
+      "A09"
+    ]
+  },
+  "references": [
+    "Mask or redact sensitive fields before logging: use structured logging with field exclusions.",
+    "Implement a log sanitizer/redactor middleware that strips secrets from log records.",
+    "Use a secrets scanning tool in your CI pipeline (e.g., truffleHog, gitleaks) to catch log leaks.",
+    "Consider log access controls: limit who can query logs containing sensitive operation traces.",
+    "CWE references: CWE-532"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "owasp.logging.a09_pii_log",
+  "title": "PII or Sensitive Data in Logs",
+  "description": "Logging personally identifiable information (email, SSN, credit card numbers, passwords) violates OWASP A09:2021 (Security Logging and Monitoring Failures) and creates compliance liabilities under GDPR/CCPA.",
+  "policy": {
+    "framework": "owasp",
+    "category": "logging",
+    "code": "a09_pii_log"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "pii",
+    "logging",
+    "gdpr",
+    "owasp-a09"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(log|logger|logging|print|console\\.log|println!).*(?:email|ssn|social_security|credit_card|card_number|password|passwd|dob|date_of_birth|phone_number)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(log\\.info|log\\.debug|log\\.warn|log\\.error|logging\\.(info|debug|warning|error)).*(?:email|ssn|password|credit_card|token|secret)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-PII-LOG-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "PII or sensitive data potentially logged at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A09"
+    ],
+    "soc2": [
+      "CC7.2"
+    ],
+    "gdpr": [
+      "Art.5(1)(f)",
+      "Art.32"
+    ]
+  },
+  "references": [
+    "Implement a log sanitizer that redacts known PII fields before writing log records.",
+    "Use structured logging with field-level access control to prevent sensitive fields from reaching log aggregators.",
+    "Apply data minimization: log only what is necessary for security monitoring and incident response.",
+    "GDPR Article 5(1)(f) requires appropriate security for personal data processing, including logs.",
+    "CWE references: CWE-532, CWE-200"
+  ]
+}

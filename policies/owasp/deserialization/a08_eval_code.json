@@ -1,0 +1,69 @@
+{
+  "id": "owasp.deserialization.a08_eval_code",
+  "title": "Dynamic Code Evaluation",
+  "description": "Passing user-controlled strings to eval(), exec(), compile(), or Function() constructors allows arbitrary code execution, equivalent to deserialization attacks (OWASP A08:2021 / CWE-94).",
+  "policy": {
+    "framework": "owasp",
+    "category": "deserialization",
+    "code": "a08_eval_code"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "eval",
+    "code-injection",
+    "owasp-a08"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(eval\\(|exec\\(|compile\\(|execfile\\(|__import__\\().*(?:request|input|param|user|query|argv)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(new Function\\(|vm\\.runInNewContext|vm\\.runInThisContext).*(?:req|input|param|user)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Kernel\\.eval|binding\\.eval|instance_eval).*(?:params|input|request)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-EVAL-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Dynamic code evaluation with potential user input at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A08",
+      "A03"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Never pass user-controlled data to eval(), exec(), or dynamic code evaluation functions.",
+    "Replace dynamic evaluation with explicit dispatch tables or configuration-driven logic.",
+    "Use sandboxed evaluation environments (PyPy sandbox, Deno with --allow-none) only as a last resort.",
+    "OWASP Code Injection prevention guidance.",
+    "CWE references: CWE-94, CWE-95"
+  ]
+}

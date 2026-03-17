@@ -1,0 +1,38 @@
+{
+  "id": "gdpr.transfer.art44_1",
+  "title": "Unlawful Third-Country Data Transfer — Hardcoded Non-EEA Endpoint",
+  "description": "Transferring personal data to third countries without an adequacy decision or appropriate safeguards violates GDPR Article 44. Hardcoded endpoints to non-EEA services without documented transfer mechanisms are non-compliant.",
+  "policy": {
+    "framework": "gdpr",
+    "category": "transfer",
+    "code": "art44_1"
+  },
+  "severity": "high",
+  "languages": ["*"],
+  "tags": ["data-transfer", "third-country", "gdpr-art44"],
+  "scope": {
+    "node_kinds": ["string_literal"]
+  },
+  "match": {
+    "any": [
+      { "fact": "token", "op": "matches", "value": "(?i)https?://(?:[a-z0-9-]+\\.)?(?:amazonaws\\.com|googleapi\\.com|azure\\.com|salesforce\\.com|hubspot\\.com|segment\\.io|mixpanel\\.com|amplitude\\.com|intercom\\.io)(?:/[^'\"]*)?(?=.*(?:personal|user|customer|patient|email|pii))" },
+      { "fact": "layer1_rule_id", "op": "equals", "value": "L1-XBORDER-TRANSFER-001" }
+    ]
+  },
+  "finding": {
+    "message": "Potential cross-border personal data transfer to '{{token}}' in {{file}} at line {{line}}. Verify GDPR transfer mechanism.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "gdpr": ["Art.44", "Art.46", "Art.49"],
+    "soc2": [],
+    "owasp": []
+  },
+  "references": [
+    "Document the legal basis for every third-country transfer: adequacy decision, SCCs, BCRs, or derogation.",
+    "Maintain a Record of Processing Activities (RoPA) per Article 30 listing all data processors and their locations.",
+    "Prefer EU/EEA-based service providers or processors with active EU SCCs where possible.",
+    "EDPB Recommendations 01/2020 on measures that supplement transfer tools."
+  ]
+}

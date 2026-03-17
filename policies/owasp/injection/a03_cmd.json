@@ -1,0 +1,68 @@
+{
+  "id": "owasp.injection.a03_cmd",
+  "title": "OS Command Injection",
+  "description": "Passing user-controlled data to OS command execution APIs without sanitization leads to command injection (OWASP A03:2021 / CWE-78). Attackers can execute arbitrary system commands.",
+  "policy": {
+    "framework": "owasp",
+    "category": "injection",
+    "code": "a03_cmd"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "command-injection",
+    "os-exec",
+    "owasp-a03"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(os\\.system|os\\.popen|subprocess\\.(call|run|Popen)|exec\\(|eval\\(|shell_exec|passthru|proc_open|popen)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Runtime\\.getRuntime\\(\\)\\.exec|ProcessBuilder|child_process\\.(exec|spawn|execSync)|exec\\.Command)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)shell\\s*=\\s*True"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-CMD-INJECT-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "OS command execution sink '{{token}}' in {{file}} at line {{line}}. Verify no user input reaches this call.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A03"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Use array-form subprocess calls (no shell=True) in Python; never pass user input in the command string.",
+    "Whitelist acceptable command arguments; reject anything containing shell metacharacters.",
+    "Prefer library APIs over shelling out when possible (e.g., use the zipfile module instead of calling unzip).",
+    "OWASP OS Command Injection Defense Cheat Sheet.",
+    "CWE references: CWE-78"
+  ]
+}

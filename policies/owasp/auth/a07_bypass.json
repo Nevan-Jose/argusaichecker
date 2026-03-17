@@ -1,0 +1,65 @@
+{
+  "id": "owasp.auth.a07_bypass",
+  "title": "Authentication Bypass Pattern",
+  "description": "Hardcoded authentication outcomes or disabled auth checks violate OWASP A07:2021 (Identification and Authentication Failures). Attackers can exploit these to gain unauthorized access without valid credentials.",
+  "policy": {
+    "framework": "owasp",
+    "category": "auth",
+    "code": "a07_bypass"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "auth-bypass",
+    "authentication",
+    "owasp-a07"
+  ],
+  "scope": {
+    "node_kinds": [
+      "return_statement",
+      "assignment",
+      "function_definition"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(return\\s+true.*#.*auth|authenticate.*return.*true|is_authenticated\\s*=\\s*True|auth_required\\s*=\\s*False)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(no_login_required|login_exempt|skip_auth|@allow_any|@public_endpoint)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-AUTH-BYPASS-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Authentication bypass pattern '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A07"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Remove all hardcoded auth bypass paths; use a central authentication middleware.",
+    "Apply deny-by-default: require explicit authentication declarations, not opt-out.",
+    "Enforce multi-factor authentication for administrative and privileged accounts.",
+    "OWASP Authentication Cheat Sheet.",
+    "CWE references: CWE-287, CWE-306"
+  ]
+}

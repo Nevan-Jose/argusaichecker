@@ -1,0 +1,64 @@
+{
+  "id": "owasp.auth.a07_default_creds",
+  "title": "Default or Well-Known Credentials",
+  "description": "Hardcoded default credentials (admin/admin, root/root, test/test) in code or configuration files represent a critical authentication failure (OWASP A07:2021 / CWE-798).",
+  "policy": {
+    "framework": "owasp",
+    "category": "auth",
+    "code": "a07_default_creds"
+  },
+  "severity": "critical",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "default-credentials",
+    "authentication",
+    "owasp-a07"
+  ],
+  "scope": {
+    "node_kinds": [
+      "string_literal",
+      "assignment"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(password|passwd|pwd)\\s*[=:]\\s*['\"]?(admin|password|123456|test|root|default|changeme|secret|qwerty|letmein|pass)['\"]?"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(username|user)\\s*[=:]\\s*['\"]?(admin|root|test|administrator|superuser)['\"]?\\s*.*(?:password|passwd)\\s*[=:]\\s*['\"]?(admin|password|123456|test|root|default)['\"]?"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-DEFAULT-CREDS-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Default or well-known credential pattern '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A07"
+    ],
+    "soc2": [
+      "CC6.1"
+    ]
+  },
+  "references": [
+    "Remove all default credentials from code and configuration files.",
+    "Require credential rotation on first use for any system-provisioned accounts.",
+    "Use a secrets manager to provision credentials; never hardcode them.",
+    "Add pre-commit hooks to scan for known credential patterns.",
+    "CWE references: CWE-798, CWE-1392"
+  ]
+}

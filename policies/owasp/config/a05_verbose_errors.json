@@ -1,0 +1,69 @@
+{
+  "id": "owasp.config.a05_verbose_errors",
+  "title": "Verbose Error Information Disclosure",
+  "description": "Returning full stack traces, SQL error messages, or internal exception details to clients leaks system architecture information useful for targeted attacks (OWASP A05:2021 / CWE-209).",
+  "policy": {
+    "framework": "owasp",
+    "category": "config",
+    "code": "a05_verbose_errors"
+  },
+  "severity": "medium",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "error-disclosure",
+    "information-leakage",
+    "owasp-a05"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "return_statement"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(traceback\\.format_exc|traceback\\.print_exc|e\\.printStackTrace|sys\\.exc_info)"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(return.*json.*(?:error|exception|traceback|stack)|render.*(?:500|error).*(?:message|traceback))"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(DEBUG\\s*=\\s*True|PROPAGATE_EXCEPTIONS\\s*=\\s*True|show_error_details\\s*=\\s*true)"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-VERBOSE-ERR-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Verbose error disclosure at '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A05"
+    ],
+    "soc2": [
+      "CC7.2"
+    ]
+  },
+  "references": [
+    "Log detailed errors server-side with a correlation ID; return only a generic message to clients.",
+    "Implement a global exception handler that sanitizes error responses before they reach clients.",
+    "Disable debug mode and exception propagation in production configurations.",
+    "OWASP Error Handling Cheat Sheet.",
+    "CWE references: CWE-209, CWE-200"
+  ]
+}

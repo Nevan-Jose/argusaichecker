@@ -1,0 +1,64 @@
+{
+  "id": "owasp.crypto.a02_weak_cipher",
+  "title": "Weak Symmetric Encryption Algorithm",
+  "description": "DES, 3DES, RC2, RC4, and AES-ECB are broken or insufficiently secure for protecting sensitive data (OWASP A02:2021 / CWE-327). These algorithms are vulnerable to various cryptanalytic attacks.",
+  "policy": {
+    "framework": "owasp",
+    "category": "crypto",
+    "code": "a02_weak_cipher"
+  },
+  "severity": "high",
+  "languages": [
+    "*"
+  ],
+  "tags": [
+    "weak-crypto",
+    "cipher",
+    "owasp-a02"
+  ],
+  "scope": {
+    "node_kinds": [
+      "function_call",
+      "string_literal"
+    ]
+  },
+  "match": {
+    "any": [
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(DES|3DES|Triple.?DES|RC2|RC4|AES.ECB|Blowfish|IDEA|\"DES\"|\"RC4\"|'RC4'|'DES')"
+      },
+      {
+        "fact": "token",
+        "op": "matches",
+        "value": "(?i)(Cipher\\.getInstance\\(['\"](?:DES|DESede|RC2|RC4|AES/ECB)['\"]|crypto\\.createCipheriv\\(['\"](?:des|rc2|rc4)['\"])"
+      },
+      {
+        "fact": "layer1_rule_id",
+        "op": "equals",
+        "value": "L1-WEAK-CIPHER-001"
+      }
+    ]
+  },
+  "finding": {
+    "message": "Weak cipher algorithm '{{token}}' in {{file}} at line {{line}}.",
+    "primary_anchor": "token",
+    "related": []
+  },
+  "mappings": {
+    "owasp": [
+      "A02"
+    ],
+    "soc2": [
+      "CC6.7"
+    ]
+  },
+  "references": [
+    "Use AES-256-GCM for authenticated encryption; it provides both confidentiality and integrity.",
+    "ChaCha20-Poly1305 is a good alternative, especially in contexts without AES hardware acceleration.",
+    "RFC 7465 prohibits RC4 in TLS. 3DES has a 64-bit block size making it vulnerable to Sweet32.",
+    "NIST SP 800-175B Revision 1 provides approved cryptographic algorithm guidance.",
+    "CWE references: CWE-327"
+  ]
+}
