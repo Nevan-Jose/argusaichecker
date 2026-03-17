@@ -1,0 +1,404 @@
+{
+  "rules": [
+    {
+      "rule_id": "POL-SECRET-001",
+      "title": "Hardcoded Secret or Credential",
+      "description": "A secret, API key, or credential literal appears hardcoded in source code. Hardcoded credentials allow unauthorized access if code is exposed. Maps to OWASP ASVS v5 V6.4 (Secret Management), CWE-798 (Use of Hard-coded Credentials), and NIST SP 800-53 IA-5 (Authenticator Management).",
+      "category": "secrets",
+      "severity": "critical",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "AKIA[0-9A-Z]{16}",
+        "AIza[0-9A-Za-z_-]{35}",
+        "(?i)ghp_[0-9A-Za-z]{36}",
+        "(?i)sk-[A-Za-z0-9]{32,}",
+        "(?i)(aws_secret_access_key|aws_access_key_id)[\\s]*[=:][\\s]*['\"][^'\"]{16,}['\"]",
+        "(?i)(api[_-]?key|secret[_-]?key|private[_-]?key|client[_-]?secret)[\\s]*[=:][\\s]*['\"][^'\"]{8,}['\"]",
+        "(?i)(password|passwd)[\\s]*=[\\s]*['\"][^'\"]{6,}['\"]",
+        "(?i)BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Move secrets to environment variables, a secrets manager (Vault, AWS Secrets Manager), or a CI/CD secrets store; satisfies OWASP ASVS V6.4 and NIST SP 800-53 IA-5",
+        "Rotate any exposed credential immediately and audit access logs",
+        "Use pre-commit hooks or CI scanning (gitleaks, truffleHog) to prevent future commits of secrets"
+      ],
+      "adjacent_bug_checks": [
+        "Is this credential also present in git history or logs?",
+        "Is the value used in a context that could be reflected in error messages or responses?"
+      ]
+    },
+    {
+      "rule_id": "POL-CRYPTO-001",
+      "title": "Weak or Broken Cryptographic Primitive",
+      "description": "Use of a cryptographically broken or weak algorithm (MD5, SHA-1, DES, RC4, ECB mode). These algorithms are vulnerable to collision or brute-force attacks. Maps to OWASP ASVS v5 V6.2 (Algorithms), CWE-327 (Use of a Broken or Risky Cryptographic Algorithm), and NIST SP 800-131A (Transitioning Cryptographic Algorithms).",
+      "category": "crypto",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)hashlib\\.md5",
+        "(?i)hashlib\\.sha1",
+        "(?i)md5\\.new",
+        "(?i)sha\\.new",
+        "(?i)createHash\\(['\"]md5['\"]",
+        "(?i)createHash\\(['\"]sha1['\"]",
+        "(?i)crypto\\.createCipher\\(",
+        "(?i)DES\\.new",
+        "(?i)RC4",
+        "(?i)modes\\.ECB",
+        "(?i)AES\\.MODE_ECB",
+        "(?i)md5\\.Sum",
+        "(?i)sha1\\.Sum"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Replace MD5/SHA-1 with SHA-256 or SHA-3 for integrity; use bcrypt, scrypt, or Argon2id for password hashing (OWASP ASVS V6.2.2, NIST SP 800-131A)",
+        "Replace DES/RC4 with AES-256-GCM or ChaCha20-Poly1305 for symmetric encryption",
+        "Never use ECB mode; prefer authenticated encryption modes (GCM, CCM)"
+      ],
+      "adjacent_bug_checks": [
+        "Is this algorithm used for password storage or session token generation?",
+        "Is the output of this hash used as a security control (integrity check, HMAC, key derivation)?"
+      ]
+    },
+    {
+      "rule_id": "POL-RAND-001",
+      "title": "Insecure Randomness",
+      "description": "Use of a non-cryptographic random number generator in a security-sensitive context. Predictable values break session tokens, nonces, and key material. Maps to OWASP ASVS v5 V6.3 (Random Values), CWE-338 (Use of Cryptographically Weak PRNG), and NIST SP 800-90A.",
+      "category": "crypto",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)random\\.random\\(",
+        "(?i)random\\.randint\\(",
+        "(?i)random\\.choice\\(",
+        "(?i)Math\\.random\\(",
+        "(?i)rand\\.Intn\\(",
+        "(?i)rand\\.Float",
+        "(?i)rand\\.New\\(rand\\.NewSource"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Use a CSPRNG: secrets.token_bytes() in Python, crypto.randomBytes() in Node.js, crypto/rand in Go (OWASP ASVS V6.3.1)",
+        "Never use math/rand or Math.random() for tokens, nonces, session IDs, or key material"
+      ],
+      "adjacent_bug_checks": [
+        "Is this random value used in a token, session ID, nonce, or CSRF protection context?",
+        "Is the seed fixed or time-based, making it predictable?"
+      ]
+    },
+    {
+      "rule_id": "POL-SQL-001",
+      "title": "SQL Query String Interpolation",
+      "description": "A SQL query is constructed via string interpolation or concatenation, enabling SQL injection when user input reaches the query. Maps to OWASP ASVS v5 V5.3.4 (Output Encoding and Injection), CWE-89 (SQL Injection), and NIST SP 800-53 SI-10 (Information Input Validation).",
+      "category": "injection",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)SELECT[^;]{0,120}\\{",
+        "(?i)INSERT[^;]{0,120}\\{",
+        "(?i)UPDATE[^;]{0,120}\\{",
+        "(?i)DELETE[^;]{0,120}\\{",
+        "(?i)SELECT[^;]{0,120}\\+\\s*[a-zA-Z_]",
+        "(?i)f['\"]\\s*SELECT",
+        "(?i)f['\"]\\s*INSERT",
+        "(?i)fmt\\.Sprintf.*SELECT",
+        "(?i)fmt\\.Sprintf.*INSERT",
+        "(?i)fmt\\.Sprintf.*UPDATE",
+        "(?i)fmt\\.Sprintf.*DELETE"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 3,
+      "review_required": true,
+      "policy_hints": [
+        "Use parameterized queries or prepared statements exclusively; satisfies OWASP ASVS V5.3.4 and NIST SP 800-53 SI-10",
+        "Apply an ORM or query builder that escapes values by default",
+        "Validate and allowlist any identifiers (table/column names) that cannot be parameterized"
+      ],
+      "adjacent_bug_checks": [
+        "Does user-controlled input (request parameter, form field, header) reach this query without sanitization?",
+        "Is there an ORM or input-validation layer that could already prevent this?"
+      ]
+    },
+    {
+      "rule_id": "POL-EXEC-001",
+      "title": "Dangerous Shell or OS Command Execution",
+      "description": "Shell or OS command execution sink that may receive user-controlled input, enabling OS command injection. Maps to OWASP ASVS v5 V5.3.8 (OS Command Injection), CWE-78 (OS Command Injection), and NIST SP 800-53 SI-10.",
+      "category": "execution",
+      "severity": "high",
+      "languages": ["javascript", "python", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)^exec$",
+        "(?i)execSync\\(",
+        "(?i)spawnSync\\(",
+        "(?i)child_process",
+        "(?i)os\\.system\\(",
+        "(?i)os\\.popen\\(",
+        "(?i)subprocess\\.call\\(",
+        "(?i)subprocess\\.run\\(",
+        "(?i)subprocess\\.Popen\\(",
+        "(?i)commands\\.getoutput\\(",
+        "(?i)exec\\.Command\\(",
+        "(?i)syscall\\.Exec\\("
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Pass arguments as a list (not a shell string) and set shell=False in Python or avoid exec with shell=true; satisfies OWASP ASVS V5.3.8",
+        "Validate all inputs against a strict allowlist before passing to any shell sink",
+        "Prefer higher-level library APIs over direct shell invocation whenever possible"
+      ],
+      "adjacent_bug_checks": [
+        "Is any part of the command string derived from a request parameter, environment variable, or file path?",
+        "Is shell escaping, allowlisting, or sandboxing applied before this call?"
+      ]
+    },
+    {
+      "rule_id": "POL-AUTH-001",
+      "title": "Authentication Verification Disabled or Bypassed",
+      "description": "An authentication, signature, or certificate verification check is explicitly disabled. Disabling these controls allows forged tokens, expired sessions, or untrusted certificates to be accepted. Maps to OWASP ASVS v5 V3.5 (Token-Based Authentication) and V9.2 (Server TLS), CWE-287 (Improper Authentication), and NIST SP 800-53 IA-3 (Device Identification and Authentication).",
+      "category": "auth",
+      "severity": "critical",
+      "languages": ["javascript", "python", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)ignoreExpiration",
+        "(?i)ignoreNotBefore",
+        "(?i)algorithms.*none",
+        "(?i)verify\\s*=\\s*False",
+        "(?i)ssl_verify\\s*=\\s*False",
+        "(?i)verify_ssl\\s*=\\s*False",
+        "(?i)InsecureSkipVerify\\s*:\\s*true",
+        "(?i)insecure\\s*=\\s*True",
+        "(?i)skip_auth",
+        "(?i)bypass_auth",
+        "(?i)disable_auth",
+        "(?i)no_verify"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Never disable token expiry, signature verification, or certificate validation in production; satisfies OWASP ASVS V3.5 and NIST SP 800-53 IA-3",
+        "Gate any test-only bypass behind an environment check (NODE_ENV === 'test') and ensure it cannot reach production builds",
+        "For JWT: always specify and enforce the expected algorithm set; reject the 'none' algorithm"
+      ],
+      "adjacent_bug_checks": [
+        "Is this bypass conditional on an environment variable, or is it always active?",
+        "Could an attacker craft a request that exploits the disabled check (forged JWT, expired token, self-signed cert)?"
+      ]
+    },
+    {
+      "rule_id": "POL-TLS-001",
+      "title": "TLS Certificate Verification Disabled",
+      "description": "TLS certificate or hostname verification is explicitly disabled on an outbound connection, enabling man-in-the-middle attacks. Maps to OWASP ASVS v5 V9.2.1 (TLS Verification), CWE-295 (Improper Certificate Validation), and NIST SP 800-53 SC-8 (Transmission Confidentiality and Integrity).",
+      "category": "auth",
+      "severity": "critical",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)verify\\s*=\\s*False",
+        "(?i)ssl_verify\\s*=\\s*False",
+        "(?i)rejectUnauthorized\\s*:\\s*false",
+        "(?i)InsecureSkipVerify\\s*:\\s*true",
+        "(?i)checkServerIdentity.*return",
+        "(?i)CERT_NONE",
+        "(?i)ssl\\._create_unverified_context",
+        "(?i)urllib.*context.*unverified"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Never disable certificate verification; use a properly configured CA bundle or pin certificates (OWASP ASVS V9.2.1, NIST SP 800-53 SC-8)",
+        "If a self-signed cert is required in development, add it to the trusted CA store rather than disabling verification globally",
+        "Use HSTS and certificate pinning for high-sensitivity services"
+      ],
+      "adjacent_bug_checks": [
+        "Is this connection sending authentication tokens, credentials, or PII?",
+        "Is verification disabled only in test/dev paths or across all environments?"
+      ]
+    },
+    {
+      "rule_id": "POL-DESER-001",
+      "title": "Unsafe Deserialization of Untrusted Data",
+      "description": "Deserialization of data from an untrusted source using an unsafe mechanism. Unsafe deserialization can lead to remote code execution or privilege escalation. Maps to OWASP ASVS v5 V5.5.1 (Deserialization Prevention), CWE-502 (Deserialization of Untrusted Data), and NIST SP 800-53 SI-16 (Memory Protection).",
+      "category": "deserialization",
+      "severity": "high",
+      "languages": ["go", "python", "javascript"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)pickle\\.loads\\(",
+        "(?i)pickle\\.load\\(",
+        "(?i)marshal\\.loads\\(",
+        "(?i)yaml\\.load\\(",
+        "(?i)jsonpickle\\.decode\\(",
+        "(?i)shelve\\.open\\(",
+        "(?i)gob\\.NewDecoder",
+        "(?i)encoding/gob",
+        "(?i)eval\\(",
+        "(?i)Function\\(['\"]",
+        "(?i)deserialize\\(",
+        "(?i)unserialize\\("
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Prefer safe alternatives: yaml.safe_load(), JSON with a typed schema, or Protocol Buffers; satisfies OWASP ASVS V5.5.1",
+        "Never deserialize data from user-controlled sources with pickle, marshal, or gob without integrity verification",
+        "If deserialization is unavoidable, validate a cryptographic signature on the payload before decoding"
+      ],
+      "adjacent_bug_checks": [
+        "Does the data source originate from a user request, cookie, message queue, or external API?",
+        "Is there any type or schema validation applied after deserialization?"
+      ]
+    },
+    {
+      "rule_id": "POL-PATH-001",
+      "title": "Path Traversal via Unsanitized Input",
+      "description": "A file path is constructed from user-supplied input without sanitization, enabling directory traversal attacks that may expose or overwrite arbitrary files. Maps to OWASP ASVS v5 V12.3 (File Execution), CWE-22 (Path Traversal), and NIST SP 800-53 AC-3 (Access Enforcement).",
+      "category": "injection",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)os\\.path\\.join\\(",
+        "(?i)open\\([^)]*request",
+        "(?i)open\\([^)]*param",
+        "(?i)path\\.join\\([^)]*req",
+        "(?i)filepath\\.Join\\(",
+        "(?i)ioutil\\.ReadFile\\(",
+        "(?i)os\\.ReadFile\\(",
+        "(?i)fs\\.readFile\\(",
+        "(?i)fs\\.readFileSync\\("
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Resolve and validate the canonical path (filepath.Clean + prefix check in Go; os.path.realpath + prefix check in Python) before any file operation; satisfies OWASP ASVS V12.3",
+        "Allowlist permitted directories and reject paths that escape the base directory",
+        "Reject path components containing '..' or null bytes before path construction"
+      ],
+      "adjacent_bug_checks": [
+        "Does any segment of the path originate from a request parameter, header, or uploaded filename?",
+        "Is the resolved path validated to remain within an expected root directory?"
+      ]
+    },
+    {
+      "rule_id": "POL-SSRF-001",
+      "title": "Server-Side Request Forgery via Unsanitized URL",
+      "description": "An outbound HTTP request is constructed from user-supplied input without validation, enabling SSRF attacks that may access internal services, cloud metadata endpoints, or other restricted resources. Maps to OWASP ASVS v5 V10.3 (HTTP Request Forgery), CWE-918 (SSRF), and NIST SP 800-53 AC-17 (Remote Access).",
+      "category": "other",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)requests\\.get\\(",
+        "(?i)requests\\.post\\(",
+        "(?i)requests\\.request\\(",
+        "(?i)urllib\\.request\\.urlopen\\(",
+        "(?i)http\\.get\\(",
+        "(?i)axios\\.get\\(",
+        "(?i)axios\\.post\\(",
+        "(?i)fetch\\(",
+        "(?i)http\\.NewRequest\\(",
+        "(?i)http\\.Get\\(",
+        "(?i)http\\.Post\\("
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Validate outbound URLs against a strict allowlist of permitted hosts and schemes before making requests; satisfies OWASP ASVS V10.3",
+        "Block requests to private IP ranges (169.254.x.x, 10.x.x.x, 172.16-31.x.x, 192.168.x.x) and localhost",
+        "Do not forward raw user-supplied URLs; resolve and re-validate after any redirect"
+      ],
+      "adjacent_bug_checks": [
+        "Is the URL or any URL component derived from a user request parameter, body field, or header?",
+        "Is there an allowlist or DNS resolution validation before the request is sent?"
+      ]
+    },
+    {
+      "rule_id": "POL-LOG-001",
+      "title": "Sensitive Data Written to Logs",
+      "description": "Credentials, tokens, PII, or other sensitive values may be written to application logs, creating an exposure risk in log storage and aggregation systems. Maps to OWASP ASVS v5 V7.1 (Log Content Requirements), CWE-532 (Insertion of Sensitive Information into Log File), and NIST SP 800-53 AU-3 (Content of Audit Records).",
+      "category": "compliance",
+      "severity": "medium",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)log.*password",
+        "(?i)log.*secret",
+        "(?i)log.*token",
+        "(?i)log.*api[_-]?key",
+        "(?i)log.*credential",
+        "(?i)print.*password",
+        "(?i)print.*secret",
+        "(?i)console\\.log.*password",
+        "(?i)console\\.log.*token",
+        "(?i)fmt\\.Print.*password",
+        "(?i)fmt\\.Print.*secret"
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 3,
+      "review_required": true,
+      "policy_hints": [
+        "Scrub or mask sensitive fields before logging; implement a log sanitizer for structured loggers (OWASP ASVS V7.1.1, NIST SP 800-53 AU-3)",
+        "Use structured logging with explicit field allow-lists rather than logging entire request/response objects",
+        "Ensure log storage ACLs restrict access to authorized security personnel only"
+      ],
+      "adjacent_bug_checks": [
+        "Is the logged value derived from a request header, cookie, or body that might contain credentials?",
+        "Are log outputs shipped to a third-party aggregator where data-residency requirements apply?"
+      ]
+    },
+    {
+      "rule_id": "POL-UPLOAD-001",
+      "title": "Unsafe File Upload or Archive Extraction",
+      "description": "File upload handling or archive extraction without adequate validation may allow malicious file execution, path traversal via zip-slip, or resource exhaustion. Maps to OWASP ASVS v5 V12.2 (File Upload Requirements), CWE-434 (Unrestricted Upload of File with Dangerous Type) and CWE-22 (Path Traversal via zip-slip), and NIST SP 800-53 SI-3 (Malicious Code Protection).",
+      "category": "other",
+      "severity": "high",
+      "languages": ["python", "javascript", "go"],
+      "path_patterns": [],
+      "token_patterns": [
+        "(?i)zipfile\\.ZipFile\\(",
+        "(?i)tarfile\\.open\\(",
+        "(?i)extractall\\(",
+        "(?i)\\.extract\\(",
+        "(?i)unzip\\(",
+        "(?i)AdmZip\\(",
+        "(?i)archive\\.Extract",
+        "(?i)multipart\\.Form",
+        "(?i)req\\.files",
+        "(?i)request\\.files",
+        "(?i)multer\\("
+      ],
+      "metadata_filters": {},
+      "dedupe_radius_lines": 5,
+      "review_required": true,
+      "policy_hints": [
+        "Validate file extensions and MIME types against an allowlist; store uploads outside the web root (OWASP ASVS V12.2)",
+        "For archive extraction, verify each member path resolves within the target directory to prevent zip-slip (CWE-22)",
+        "Enforce file size limits and scan uploads with antivirus or content inspection before processing"
+      ],
+      "adjacent_bug_checks": [
+        "Is the extraction destination path validated against a safe root directory after resolving member paths?",
+        "Is the uploaded filename used anywhere in file system operations or responses without sanitization?"
+      ]
+    }
+  ]
+}
