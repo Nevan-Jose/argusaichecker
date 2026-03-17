@@ -24,11 +24,11 @@ pub fn run(config: Config) -> Result<()> {
     };
     info!("Loaded {} anchors", anchors.len());
 
-    // Stage 3+4: Compile policy rules and run deterministic matching.
-    let policy_rules = match crate::ingest::load_policy(&config.policy_path) {
-        Ok(policy_rules) => policy_rules,
+    // Stage 3+4: Load policy rules from directory and compile.
+    let policy_rules = match crate::ingest::load_policy(&config.policy_dir) {
+        Ok(rules) => rules,
         Err(err) => {
-            error!("Failed to load policy from {:?}: {}", config.policy_path, err);
+            error!("Failed to load policy from {:?}: {}", config.policy_dir, err);
             return Err(err);
         }
     };
@@ -88,7 +88,7 @@ pub fn run(config: Config) -> Result<()> {
         &clusters,
         &reviews,
         &config.tokens_path.to_string_lossy(),
-        &config.policy_path.to_string_lossy(),
+        &config.policy_dir.to_string_lossy(),
         &config.source_dir.to_string_lossy(),
     ) {
         error!("Failed to write final JSON report to {:?}: {}", report_path, err);

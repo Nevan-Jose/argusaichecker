@@ -22,7 +22,7 @@ impl ReviewProvider for MockProvider {
             confirmed: plan.confirmed,
             confidence: plan.confidence,
             severity_adjustment: None,
-            false_positive_reason: plan.false_positive_reason,
+            false_positive_reason: plan.false_positive_reason.clone(),
             hidden_adjacent_faults: mock_adjacent_faults(packet),
             explanation: mock_explanation(packet, &plan),
             remediation: mock_remediation(packet),

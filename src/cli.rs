@@ -7,8 +7,8 @@ pub struct Args {
     #[arg(long, help = "Path to tokens.json from Layer 1")]
     pub tokens: PathBuf,
 
-    #[arg(long, help = "Path to policy.json")]
-    pub policy: PathBuf,
+    #[arg(long, help = "Path to policy rules directory (contains <framework>/<category>/<code>.json files)")]
+    pub policy_dir: PathBuf,
 
     #[arg(long, help = "Source directory for context extraction")]
     pub source_dir: PathBuf,

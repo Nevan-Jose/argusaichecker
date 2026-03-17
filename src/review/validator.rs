@@ -21,12 +21,12 @@ pub fn parse_response(cluster_id: &str, raw: &str) -> Result<TriageResult, Strin
         .clamp(0.0, 1.0);
 
     let severity_adjustment = match v["severity_adjustment"].as_str() {
-        Some("info")     => Some(Severity::Info),
         Some("low")      => Some(Severity::Low),
         Some("medium")   => Some(Severity::Medium),
         Some("high")     => Some(Severity::High),
         Some("critical") => Some(Severity::Critical),
-        None | Some("null") | Some("") => None,
+        // "info" is no longer a valid severity in the new schema; treat as no adjustment.
+        None | Some("null") | Some("") | Some("info") => None,
         Some(other) => {
             return Err(format!("invalid severity_adjustment value: '{other}'"));
         }

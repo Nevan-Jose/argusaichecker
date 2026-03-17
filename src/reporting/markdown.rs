@@ -230,7 +230,7 @@ fn severity_badge(sev: &str) -> &'static str {
 }
 
 fn what_is_wrong(c: &ViolationCluster) -> String {
-    match c.category.to_string().as_str() {
+    match c.category.as_str() {
         "secrets" => format!(
             "A secret, credential, or API key appears to be written directly into the source code in `{}`. \
              Anyone who can read this file — including version control history — can see this value.",
@@ -283,7 +283,7 @@ fn why_it_matters(c: &ViolationCluster) -> String {
         "low"      => "This is a **low-severity** issue. The risk is limited in most contexts, but should still be addressed to maintain a strong security posture.",
         _          => "This issue may represent a security or compliance concern worth reviewing.",
     };
-    let category_detail = match c.category.to_string().as_str() {
+    let category_detail = match c.category.as_str() {
         "secrets"         => " Exposed credentials can be used to access cloud services, databases, or APIs without authorization — often within minutes of code being published.",
         "crypto"          => " Weak algorithms can be reversed or forged with readily available tools, undermining the protection they were intended to provide.",
         "injection"       => " SQL injection is one of the most commonly exploited vulnerabilities. It can lead to data theft, data loss, or complete database compromise.",

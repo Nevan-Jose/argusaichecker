@@ -4,6 +4,10 @@ fn samples_dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("samples")
 }
 
+fn policies_dir() -> PathBuf {
+    samples_dir().join("policies")
+}
+
 // ── Phase 5: Ingest ───────────────────────────────────────────────────────────
 
 #[test]
@@ -24,12 +28,37 @@ fn test_load_tokens_missing_file_gives_clear_error() {
 }
 
 #[test]
-fn test_load_policy() {
-    let policy_path = samples_dir().join("policy.json");
-    let result = argusaichecker::ingest::load_policy(&policy_path);
-    assert!(result.is_ok(), "Failed to load policy: {:?}", result.err());
+fn test_load_policy_dir() {
+    let result = argusaichecker::ingest::load_policy(&policies_dir());
+    assert!(result.is_ok(), "Failed to load policy dir: {:?}", result.err());
     let rules = result.unwrap();
-    assert_eq!(rules.len(), 12, "Expected 12 policy rules");
+    // 6 sample rule files are present under samples/policies/
+    assert_eq!(rules.len(), 6, "Expected 6 policy rules");
+}
+
+#[test]
+fn test_load_policy_missing_dir_gives_clear_error() {
+    let result = argusaichecker::ingest::load_policy(std::path::Path::new("/nonexistent/policies"));
+    assert!(result.is_err());
+    let msg = format!("{:?}", result.err().unwrap());
+    assert!(
+        msg.contains("does not exist") || msg.contains("Policy"),
+        "got: {}",
+        msg
+    );
+}
+
+#[test]
+fn test_load_policy_rejects_single_file() {
+    // Passing a file path instead of a directory should fail with a clear message.
+    let result = argusaichecker::ingest::load_policy(&samples_dir().join("tokens.json"));
+    assert!(result.is_err());
+    let msg = format!("{:?}", result.err().unwrap());
+    assert!(
+        msg.contains("not a directory") || msg.contains("directory"),
+        "got: {}",
+        msg
+    );
 }
 
 // ── Phase 6: Deterministic engine ────────────────────────────────────────────
@@ -37,7 +66,7 @@ fn test_load_policy() {
 #[test]
 fn test_deterministic_matching_produces_findings() {
     let anchors = argusaichecker::ingest::load_and_normalize(&samples_dir().join("tokens.json")).unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     assert!(!matches.is_empty(), "Expected at least one raw match");
@@ -46,7 +75,7 @@ fn test_deterministic_matching_produces_findings() {
 #[test]
 fn test_dedupe_reduces_nearby_matches() {
     let anchors = argusaichecker::ingest::load_and_normalize(&samples_dir().join("tokens.json")).unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     let raw_count = matches.len();
@@ -57,7 +86,7 @@ fn test_dedupe_reduces_nearby_matches() {
 #[test]
 fn test_severity_summary() {
     let anchors = argusaichecker::ingest::load_and_normalize(&samples_dir().join("tokens.json")).unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     let clusters = argusaichecker::policy::dedupe_and_cluster(matches, &compiled);
@@ -80,7 +109,7 @@ fn test_snippet_extract_numbered() {
 #[test]
 fn test_packer_produces_packet_for_known_file() {
     let anchors = argusaichecker::ingest::load_and_normalize(&samples_dir().join("tokens.json")).unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     let clusters = argusaichecker::policy::dedupe_and_cluster(matches, &compiled);
@@ -98,7 +127,7 @@ fn test_packer_produces_packet_for_known_file() {
 #[test]
 fn test_mock_review_sets_is_mock_true() {
     let anchors = argusaichecker::ingest::load_and_normalize(&samples_dir().join("tokens.json")).unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     let clusters = argusaichecker::policy::dedupe_and_cluster(matches, &compiled);
@@ -122,7 +151,7 @@ fn test_mock_review_with_soc2_chaos_tokens_is_mixed() {
         &samples_dir().join("src/soc2-chaos-project/tokens.json"),
     )
     .unwrap();
-    let rules = argusaichecker::ingest::load_policy(&samples_dir().join("policy.json")).unwrap();
+    let rules = argusaichecker::ingest::load_policy(&policies_dir()).unwrap();
     let compiled = argusaichecker::policy::compile_rules(rules).unwrap();
     let matches = argusaichecker::policy::match_anchors(&anchors, &compiled);
     let clusters = argusaichecker::policy::dedupe_and_cluster(matches, &compiled);
@@ -183,7 +212,7 @@ fn test_full_pipeline_writes_output() {
 
     let config = argusaichecker::config::Config {
         tokens_path: samples_dir().join("tokens.json"),
-        policy_path: samples_dir().join("policy.json"),
+        policy_dir: policies_dir(),
         source_dir: samples_dir().join("src"),
         output_dir: out_dir.clone(),
         mock_review: true,
@@ -199,7 +228,7 @@ fn test_full_pipeline_writes_output() {
     // Verify provenance is populated in final_report.json
     let report_str = fs::read_to_string(out_dir.join("final_report.json")).unwrap();
     assert!(report_str.contains("tokens.json"), "tokens_path missing from report");
-    assert!(report_str.contains("policy.json"), "policy_path missing from report");
+    assert!(report_str.contains("policies"), "policy_dir missing from report");
 
     fs::remove_dir_all(&out_dir).ok();
 }

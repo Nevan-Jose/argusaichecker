@@ -1,52 +1,59 @@
-use crate::schemas::policy::{Category, PolicyRule, Severity};
+use crate::schemas::policy::{Condition, Finding, Mappings, PolicyRule, Scope, Severity};
 use anyhow::{Context, Result};
 use globset::{Glob, GlobMatcher};
-use regex::Regex;
 
+/// A compiled policy rule ready for matching.
+///
+/// `scope.module_patterns` are pre-compiled into glob matchers.
+/// All other fields are carried over from the parsed `PolicyRule`.
 pub struct CompiledPolicyRule {
-    pub rule_id: String,
+    /// Stable rule identity: `<framework>.<category>.<code>`.
+    pub id: String,
     pub title: String,
     pub description: String,
-    pub category: Category,
+    /// Category string from the rule's path segment (e.g. "injection").
+    pub category: String,
     pub severity: Severity,
+    /// Languages supported by this rule. Contains `"*"` to match all.
     pub languages: Vec<String>,
-    pub token_patterns: Vec<Regex>,
+    pub scope: Scope,
+    /// Pre-compiled glob matchers derived from `scope.module_patterns`.
     pub path_matchers: Vec<GlobMatcher>,
-    pub dedupe_radius_lines: u32,
-    pub review_required: bool,
-    pub policy_hints: Vec<String>,
-    pub adjacent_bug_checks: Vec<String>,
+    /// Recursive match condition tree.
+    pub match_condition: Condition,
+    pub finding: Finding,
+    pub references: Vec<String>,
+    pub mappings: Option<Mappings>,
 }
 
 pub fn compile(rule: PolicyRule) -> Result<CompiledPolicyRule> {
-    let token_patterns = rule
-        .token_patterns
-        .iter()
-        .map(|p| Regex::new(p).with_context(|| format!("Invalid regex in rule {}: {}", rule.rule_id, p)))
-        .collect::<Result<Vec<_>>>()?;
-
     let path_matchers = rule
-        .path_patterns
+        .scope
+        .module_patterns
         .iter()
         .map(|p| {
             Glob::new(p)
-                .with_context(|| format!("Invalid glob in rule {}: {}", rule.rule_id, p))
+                .with_context(|| format!("Invalid glob in rule '{}': {}", rule.id, p))
                 .map(|g| g.compile_matcher())
         })
         .collect::<Result<Vec<_>>>()?;
 
     Ok(CompiledPolicyRule {
-        rule_id: rule.rule_id,
+        category: rule.policy.category.clone(),
+        id: rule.id,
         title: rule.title,
         description: rule.description,
-        category: rule.category,
         severity: rule.severity,
-        languages: rule.languages.into_iter().map(|l| l.to_lowercase()).collect(),
-        token_patterns,
+        languages: rule
+            .languages
+            .into_iter()
+            .map(|l| l.to_lowercase())
+            .collect(),
+        scope: rule.scope,
         path_matchers,
-        dedupe_radius_lines: rule.dedupe_radius_lines,
-        review_required: rule.review_required,
-        policy_hints: rule.policy_hints,
-        adjacent_bug_checks: rule.adjacent_bug_checks,
+        match_condition: rule.match_condition,
+        finding: rule.finding,
+        references: rule.references,
+        mappings: rule.mappings,
     })
 }

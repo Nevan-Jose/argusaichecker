@@ -1,4 +1,5 @@
 use crate::policy::compiler::CompiledPolicyRule;
+use crate::schemas::policy::Severity;
 use crate::schemas::violations::{RawMatch, ViolationCluster};
 use std::collections::HashMap;
 use uuid::Uuid;
@@ -8,7 +9,7 @@ pub fn cluster_with_rules(
     rules: &[CompiledPolicyRule],
 ) -> Vec<ViolationCluster> {
     let rule_map: HashMap<&str, &CompiledPolicyRule> =
-        rules.iter().map(|r| (r.rule_id.as_str(), r)).collect();
+        rules.iter().map(|r| (r.id.as_str(), r)).collect();
 
     // Group by (file, rule_id)
     let mut groups: HashMap<(String, String), Vec<RawMatch>> = HashMap::new();
@@ -23,20 +24,31 @@ pub fn cluster_with_rules(
     for ((file, rule_id), mut group) in groups {
         group.sort_by_key(|m| m.line);
 
-        let rule = rule_map.get(rule_id.as_str());
-        let radius = rule.map(|r| r.dedupe_radius_lines).unwrap_or(5);
+        let rule = rule_map.get(rule_id.as_str()).copied();
 
-        // Merge nearby hits within radius into sub-clusters
+        // Deduplicate nearby hits within a fixed radius.
+        let radius: u32 = 5;
         let sub_clusters = merge_nearby(group, radius);
 
         for sub in sub_clusters {
             let first = &sub[0];
             let title = first.title.clone();
-            let category = first.category;
+            let category = first.category.clone();
             let severity = first.base_severity;
             let start_line = sub.first().map(|m| m.line).unwrap_or(0);
             let end_line = sub.last().map(|m| m.line).unwrap_or(0);
             let count = sub.len();
+
+            // Derive review_required from severity: high and critical always
+            // require a review pass.
+            let review_required = rule.map(|r| {
+                matches!(r.severity, Severity::High | Severity::Critical)
+            }).unwrap_or(false);
+
+            // Use rule references as policy hints for the reporting layer.
+            let policy_hints = rule
+                .map(|r| r.references.clone())
+                .unwrap_or_default();
 
             clusters.push(ViolationCluster {
                 cluster_id: Uuid::new_v4().to_string(),
@@ -49,13 +61,9 @@ pub fn cluster_with_rules(
                 end_line,
                 matches: sub,
                 match_count: count,
-                review_required: rule.map(|r| r.review_required).unwrap_or(false),
-                policy_hints: rule
-                    .map(|r| r.policy_hints.clone())
-                    .unwrap_or_default(),
-                adjacent_bug_checks: rule
-                    .map(|r| r.adjacent_bug_checks.clone())
-                    .unwrap_or_default(),
+                review_required,
+                policy_hints,
+                adjacent_bug_checks: Vec::new(),
             });
         }
     }

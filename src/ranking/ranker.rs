@@ -26,10 +26,9 @@ pub fn rank_clusters(clusters: &[ViolationCluster]) -> Vec<ReviewCandidate> {
 
 fn severity_score(s: Severity) -> u32 {
     match s {
-        Severity::Critical => 5,
-        Severity::High => 4,
-        Severity::Medium => 3,
-        Severity::Low => 2,
-        Severity::Info => 1,
+        Severity::Critical => 4,
+        Severity::High => 3,
+        Severity::Medium => 2,
+        Severity::Low => 1,
     }
 }

@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use crate::schemas::policy::{Severity, Category};
+use crate::schemas::policy::Severity;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -16,7 +16,8 @@ pub struct RawMatch {
     pub match_id: String,
     pub rule_id: String,
     pub title: String,
-    pub category: Category,
+    /// Free-form category string derived from the rule's path segment.
+    pub category: String,
     pub base_severity: Severity,
     pub file: String,
     pub line: u32,
@@ -31,7 +32,8 @@ pub struct ViolationCluster {
     pub cluster_id: String,
     pub rule_id: String,
     pub title: String,
-    pub category: Category,
+    /// Free-form category string derived from the rule's path segment.
+    pub category: String,
     pub severity: Severity,
     pub file: String,
     pub start_line: u32,

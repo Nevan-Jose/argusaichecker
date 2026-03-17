@@ -30,4 +30,3 @@ pub fn mock_triage(candidate: &ReviewCandidate) -> TriageResult {
         is_mock: true,
     }
 }
-}
