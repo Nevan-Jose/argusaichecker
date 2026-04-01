@@ -1,0 +1,56 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" fill="#060B10"/>
+  <text x="48" y="34" fill="#213038" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="7.2">FINDINGS</text>
+
+  <rect x="0" y="70" width="1200" height="175" fill="#0A1118"/>
+  <rect x="0" y="70" width="4" height="175" fill="#27CDB4"/>
+  <line x1="0" y1="245.5" x2="1200" y2="245.5" stroke="#111920"/>
+
+  <rect x="0" y="245" width="1200" height="175" fill="#060B10"/>
+  <line x1="0" y1="420.5" x2="1200" y2="420.5" stroke="#10171D"/>
+
+  <rect x="0" y="420" width="1200" height="175" fill="#060B10"/>
+  <line x1="0" y1="595.5" x2="1200" y2="595.5" stroke="#10171D"/>
+
+  <rect x="0" y="595" width="1200" height="165" fill="#05090D"/>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <text x="86" y="136" fill="#31414A" font-size="18" letter-spacing="3.6">01</text>
+    <rect x="170" y="102" width="132" height="36" stroke="#27CDB4" stroke-width="2"/>
+    <text x="196" y="127" fill="#54E2CC" font-size="16" font-weight="700" letter-spacing="5.6">CRITICAL</text>
+    <rect x="325" y="102" width="90" height="36" fill="#182129"/>
+    <text x="352" y="127" fill="#63737A" font-size="16" letter-spacing="4.2">SOC2</text>
+
+    <text x="86" y="193" fill="#E5F6F5" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="500">Hardcoded AWS Credentials</text>
+    <text x="86" y="242" fill="#6D828B" font-size="16">AWS access key and secret embedded directly in source file.</text>
+    <text x="86" y="280" fill="#5E717A" font-family="IBM Plex Mono, Menlo, monospace" font-size="14" letter-spacing="1.4">src/config/aws.ts</text>
+
+    <text x="86" y="311" fill="#31414A" font-size="18" letter-spacing="3.6">02</text>
+    <rect x="170" y="277" width="102" height="36" stroke="#31A9FF" stroke-width="2"/>
+    <text x="196" y="302" fill="#61C2FF" font-size="16" font-weight="700" letter-spacing="5.6">HIGH</text>
+    <rect x="325" y="277" width="90" height="36" fill="#182129"/>
+    <text x="352" y="302" fill="#63737A" font-size="16" letter-spacing="4.2">SOC2</text>
+
+    <text x="86" y="368" fill="#D9F4F1" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="500">Unauthenticated API Endpoint</text>
+    <text x="86" y="417" fill="#6D828B" font-size="16">POST /api/users has no auth middleware and caller can create accounts.</text>
+    <text x="86" y="455" fill="#5E717A" font-family="IBM Plex Mono, Menlo, monospace" font-size="14" letter-spacing="1.4">src/routes/users.ts</text>
+
+    <text x="86" y="486" fill="#31414A" font-size="18" letter-spacing="3.6">03</text>
+    <rect x="170" y="452" width="102" height="36" stroke="#31A9FF" stroke-width="2"/>
+    <text x="196" y="477" fill="#61C2FF" font-size="16" font-weight="700" letter-spacing="5.6">HIGH</text>
+    <rect x="325" y="452" width="108" height="36" fill="#182129"/>
+    <text x="349" y="477" fill="#63737A" font-size="16" letter-spacing="4.2">GDPR</text>
+
+    <text x="86" y="543" fill="#D9F4F1" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="500">PII Written to Console</text>
+    <text x="86" y="592" fill="#6D828B" font-size="16">User email address logged to stdout on every login event.</text>
+    <text x="86" y="630" fill="#5E717A" font-family="IBM Plex Mono, Menlo, monospace" font-size="14" letter-spacing="1.4">src/services/auth.ts</text>
+
+    <text x="86" y="661" fill="#31414A" font-size="18" letter-spacing="3.6">04</text>
+    <rect x="170" y="627" width="102" height="36" stroke="#31A9FF" stroke-width="2"/>
+    <text x="196" y="652" fill="#61C2FF" font-size="16" font-weight="700" letter-spacing="5.6">HIGH</text>
+    <rect x="325" y="627" width="118" height="36" fill="#182129"/>
+    <text x="350" y="652" fill="#63737A" font-size="16" letter-spacing="4.2">OWASP</text>
+
+    <text x="86" y="718" fill="#D9F4F1" font-family="Cormorant Garamond, Georgia, serif" font-size="28" font-weight="500">Insecure Cookie Configuration</text>
+  </g>
+</svg>
